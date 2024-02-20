@@ -9,15 +9,18 @@ W --+-- E
 ````
 
 > Kubeflow\
-> http://nstarx.eastus.cloudapp.azure.com/ \
+> http://nstarx.westus2.cloudapp.azure.com/ \
 *user: user@example.com, Password1#*
 
-> Sid's Portal\
-http://nstarx-portal.eastus.cloudapp.azure.com/
+> Telesign's Portal\
+http://nstarx-portal.westus2.cloudapp.azure.com/
 
 > Kara's Backend\
-http://nstarx-backend.eastus.cloudapp.azure.com/
+http://nstarx-backend.westus2.cloudapp.azure.com/
 
+Gen AI Ray cluster
+http://4.149.170.239:8265/#/overview
+client: 10001, redis: 6379, dashboard:8265
 
 # Dev
 
@@ -93,10 +96,9 @@ DS2 Machine URL after firewall open ports
 FastChat UI at
 
 ```
-http://40.76.227.135:7860/   ui
+UI
 
-http://40.76.227.135:21001/docs   controller api
+http://nstarx-fastchat.westus2.cloudapp.azure.com:8000/
 
-http://40.76.227.135:21002/docs     worker api
 
 ```
