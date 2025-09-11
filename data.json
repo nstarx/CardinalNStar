@@ -11,6 +11,21 @@
   "links": [
     {
       "id": "docs",
+      "title": "NStarX Engineering Laws",
+      "shortTitle": "Engineering Laws",
+      "description": "Best Practices for AI-Assisted Development",
+      "url": "https://nstarx.github.io/CardinalNStar/engineering-laws.html",
+      "displayUrl": "nstarx.github.io/CardinalNStar/",
+      "badge": "Documentation",
+      "terminalBadge": ["DOCS", "READY"],
+      "icon": "📚",
+      "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
+      "colorClass": "cyan-168",
+      "terminalLegend": "[ DOCUMENTATION ]",
+      "enabled": true
+    },
+    {
+      "id": "docs",
       "title": "NStarX Platform Documentation",
       "shortTitle": "Platform Docs",
       "description": "Comprehensive documentation for the NStarX platform, including setup guides, API references, and best practices.",
