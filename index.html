@@ -472,6 +472,16 @@
         .tui-window {
             margin-bottom: 20px;
             background-color: #c0c0c0;
+            border: none !important;
+        }
+        
+        .tui-window fieldset.tui-fieldset {
+            margin: 0;
+            padding: 0;
+            border: 6px double #ffffff;
+            box-sizing: border-box;
+            height: 100%;
+            width: 100%;
         }
 
         .main-container {
@@ -482,6 +492,10 @@
         .header-window {
             text-align: center;
             margin-bottom: 30px;
+        }
+        
+        .header-window fieldset.tui-fieldset {
+            padding: 20px;
         }
 
         .title-text {
@@ -527,9 +541,11 @@
 
         .link-content {
             padding: 15px;
+            padding-bottom: 5px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
         .icon-ascii {
@@ -573,6 +589,7 @@
 
         .badge-container {
             margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .tui-statusbar {
@@ -995,9 +1012,6 @@
                 linkWindow.className = 'link-window';
                 linkWindow.target = '_blank';
                 
-                const badgeItems = link.terminalBadge.map(badge => `<li>${badge}</li>`).join('');
-                const statusBarClass = link.colorClass ? ` ${link.colorClass}` : '';
-                
                 linkWindow.innerHTML = `
                     <div class="tui-window ${link.colorClass}">
                         <fieldset class="tui-fieldset">
@@ -1007,11 +1021,6 @@
                                 <div class="link-title">${link.shortTitle}</div>
                                 <div class="link-description">${link.description}</div>
                                 <div class="link-url">» ${link.displayUrl}</div>
-                                <div class="badge-container">
-                                    <span class="tui-statusbar${statusBarClass}">
-                                        <ul>${badgeItems}</ul>
-                                    </span>
-                                </div>
                             </div>
                         </fieldset>
                     </div>
