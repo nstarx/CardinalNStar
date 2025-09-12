@@ -376,6 +376,205 @@
             z-index: 2;
         }
 
+        /* Enhanced Status Badge Styles */
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .status-badge:active {
+            transform: scale(0.95);
+        }
+
+        .status-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Status Indicator Dot */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+        }
+
+        .status-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Status Text */
+        .status-label {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* Checking State */
+        .status-badge.checking {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            color: #f57c00;
+        }
+
+        .status-badge.checking .status-dot {
+            background: #ff9800;
+            animation: spin-dot 1s linear infinite;
+        }
+
+        @keyframes spin-dot {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-badge.checking .status-label::after {
+            content: '...';
+            display: inline-block;
+            width: 20px;
+            text-align: left;
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Online State */
+        .status-badge.online {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(67, 160, 71, 0.15));
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #2e7d32;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .status-badge.online .status-dot {
+            background: #4caf50;
+            box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.4);
+        }
+
+        .status-badge.online .status-dot::before {
+            animation: ping-success 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes ping-success {
+            75%, 100% {
+                transform: translate(-50%, -50%) scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Offline State */
+        .status-badge.offline {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(229, 57, 53, 0.15));
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #c62828;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        .status-badge.offline .status-dot {
+            background: #f44336;
+            box-shadow: 0 0 0 1px rgba(244, 67, 54, 0.4);
+            animation: pulse-error 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-error {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.95); opacity: 0.9; }
+        }
+
+        /* Response Time Display */
+        .response-time {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-left: 4px;
+            padding: 1px 4px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            cursor: help;
+        }
+
+        .status-badge.online .response-time {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+        }
+
+        /* Icon for status */
+        .status-icon {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            margin-right: 2px;
+        }
+
+        .status-badge.online .status-icon svg {
+            fill: #4caf50;
+        }
+
+        .status-badge.offline .status-icon svg {
+            fill: #f44336;
+        }
+
+        .status-badge.checking .status-icon svg {
+            fill: #ff9800;
+        }
+
         .badge {
             display: inline-block;
             padding: 4px 12px;
@@ -420,6 +619,28 @@
             }
             .links-grid {
                 grid-template-columns: 1fr;
+            }
+            .ui-controls {
+                right: 10px !important;
+                top: 10px !important;
+                max-width: calc(100vw - 20px) !important;
+                gap: 8px !important;
+            }
+            .ui-toggle {
+                padding: 8px 12px !important;
+                font-size: 0.75rem !important;
+                min-width: 100px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .ui-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .ui-toggle {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -587,6 +808,72 @@
             margin-top: auto;
         }
 
+        /* Enhanced Terminal Mode Status */
+        .terminal-status {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 2px solid;
+            position: relative;
+        }
+
+        .terminal-status::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .terminal-status.checking {
+            background: #333300;
+            color: #ffff00;
+            border-color: #ffff00;
+            animation: terminal-blink 1s steps(2, start) infinite;
+        }
+
+        .terminal-status.checking::before {
+            background: #ffff00;
+            animation: terminal-pulse 1s infinite;
+        }
+
+        .terminal-status.online {
+            background: #003300;
+            color: #00ff00;
+            border-color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .terminal-status.online::before {
+            background: #00ff00;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .terminal-status.offline {
+            background: #330000;
+            color: #ff0000;
+            border-color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        .terminal-status.offline::before {
+            background: #ff0000;
+            box-shadow: 0 0 5px #ff0000;
+        }
+
+        @keyframes terminal-blink {
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes terminal-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+
         .badge-container {
             margin-top: 10px;
             margin-bottom: 10px;
@@ -663,25 +950,43 @@
     </style>
 
     <style>
-        /* UI Toggle Button */
-        .ui-toggle {
+        /* UI Controls Container */
+        .ui-controls {
             position: fixed;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 10px;
             z-index: 9999;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            max-width: 500px;
+        }
+        
+        /* UI Toggle Button */
+        .ui-toggle {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 16px;
             font-family: 'Courier New', monospace;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-size: 0.82rem;
             cursor: pointer;
             box-shadow: 
-                4px 4px 0 rgba(0, 0, 0, 0.3),
-                8px 8px 0 rgba(102, 126, 234, 0.2);
+                3px 3px 0 rgba(0, 0, 0, 0.3),
+                6px 6px 0 rgba(102, 126, 234, 0.2);
             transition: all 0.3s ease;
+            white-space: nowrap;
+            border-radius: 0;
+            min-width: 120px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         .ui-toggle:hover {
@@ -704,6 +1009,7 @@
             border: 2px solid !important;
             border-color: #ffffff #808080 #808080 #ffffff !important;
             box-shadow: none !important;
+            position: relative !important;
         }
 
         .terminal-mode .ui-toggle:hover {
@@ -753,8 +1059,56 @@
         </div>
     </div>
 
-    <!-- UI Toggle Button -->
-    <button class="ui-toggle" onclick="toggleUI()">⚡ Terminal Mode</button>
+    <!-- UI Controls -->
+    <div class="ui-controls">
+        <button class="ui-toggle ping-console-btn" onclick="togglePingConsole()" title="Show/Hide ping console" style="
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+        ">
+            📟 Console
+        </button>
+        <button class="ui-toggle refresh-btn" onclick="refreshAllStatuses()" title="Refresh all status indicators" style="
+            background: linear-gradient(135deg, #4caf50, #45a049);
+        ">
+            🔄 Refresh
+        </button>
+        <button class="ui-toggle" id="uiToggleBtn" onclick="toggleUI()">
+            ⚡ Terminal
+        </button>
+    </div>
+    
+    <!-- Ping Console -->
+    <div id="pingConsole" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: min(500px, calc(100vw - 40px));
+        max-height: 300px;
+        background: #000;
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        border: 2px solid #0f0;
+        border-radius: 4px;
+        padding: 10px;
+        overflow-y: auto;
+        z-index: 9998;
+        display: none;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    ">
+        <div style="border-bottom: 1px solid #0f0; padding-bottom: 5px; margin-bottom: 10px;">
+            <strong>📟 PING CONSOLE v1.0</strong>
+            <button onclick="clearPingConsole()" style="
+                float: right;
+                background: transparent;
+                color: #0f0;
+                border: 1px solid #0f0;
+                padding: 2px 8px;
+                cursor: pointer;
+                font-size: 10px;
+            ">CLEAR</button>
+        </div>
+        <div id="pingOutput" style="white-space: pre-wrap; line-height: 1.4;"></div>
+    </div>
 
     <!-- Modern UI -->
     <div class="container">
@@ -973,6 +1327,9 @@
 
             // Load saved UI preference
             loadUIPreference();
+            
+            // Start status monitoring after initialization
+            startStatusMonitoring();
         }
 
         // Generate modern UI links
@@ -980,12 +1337,21 @@
             const grid = document.getElementById('modernLinksGrid');
             grid.innerHTML = '';
 
-            portalData.links.filter(link => link.enabled).forEach(link => {
+            portalData.links.filter(link => link.enabled).forEach((link, index) => {
+                const uniqueLinkId = `link-${index}`; // Always use index for unique ID
                 const linkCard = document.createElement('a');
                 linkCard.href = link.url;
                 linkCard.className = 'link-card';
                 linkCard.target = '_blank';
+                linkCard.setAttribute('data-link-id', uniqueLinkId);
+                linkCard.setAttribute('data-url', link.url);
                 linkCard.innerHTML = `
+                    <div class="status-badge checking" id="status-${uniqueLinkId}" 
+                         onclick="event.preventDefault(); event.stopPropagation(); updateLinkStatus('${uniqueLinkId}', '${link.url}'); return false;"
+                         title="Click to refresh status">
+                        <span class="status-dot"></span>
+                        <span class="status-label">Checking</span>
+                    </div>
                     <span class="hover-cursor">█</span>
                     <div class="icon-wrapper">
                         <svg class="icon" viewBox="0 0 24 24">
@@ -999,6 +1365,11 @@
                 `;
                 grid.appendChild(linkCard);
             });
+
+            // Start status checking after a short delay to ensure DOM is ready
+            setTimeout(() => {
+                checkAllStatuses();
+            }, 100);
         }
 
         // Generate terminal UI links
@@ -1006,16 +1377,19 @@
             const container = document.getElementById('terminalLinksContainer');
             container.innerHTML = '';
 
-            portalData.links.filter(link => link.enabled).forEach(link => {
+            portalData.links.filter(link => link.enabled).forEach((link, index) => {
+                const uniqueLinkId = `link-${index}`; // Always use index for unique ID
                 const linkWindow = document.createElement('a');
                 linkWindow.href = link.url;
                 linkWindow.className = 'link-window';
                 linkWindow.target = '_blank';
+                linkWindow.setAttribute('data-link-id', uniqueLinkId);
+                linkWindow.setAttribute('data-url', link.url);
                 
                 linkWindow.innerHTML = `
                     <div class="tui-window ${link.colorClass}">
                         <fieldset class="tui-fieldset">
-                            <legend>${link.terminalLegend}</legend>
+                            <legend>${link.terminalLegend} <span class="terminal-status checking" id="terminal-status-${uniqueLinkId}">WAIT</span></legend>
                             <div class="link-content">
                                 <span class="icon-ascii">${link.icon}</span>
                                 <div class="link-title">${link.shortTitle}</div>
@@ -1027,6 +1401,13 @@
                 `;
                 container.appendChild(linkWindow);
             });
+
+            // Start status checking if in terminal mode
+            if (isTerminalMode) {
+                setTimeout(() => {
+                    checkAllStatuses();
+                }, 100);
+            }
         }
 
         // Generate terminal navigation bar
@@ -1065,7 +1446,7 @@
         function toggleUI() {
             isTerminalMode = !isTerminalMode;
             const body = document.body;
-            const toggleBtn = document.querySelector('.ui-toggle');
+            const toggleBtn = document.getElementById('uiToggleBtn');
             const terminalStyles = document.getElementById('terminal-styles');
             const tuicssLink = document.getElementById('tuicss-stylesheet');
             
@@ -1074,16 +1455,18 @@
                 body.classList.add('terminal-mode');
                 terminalStyles.disabled = false;
                 tuicssLink.disabled = false;
-                toggleBtn.textContent = '🎨 Modern Mode';
+                toggleBtn.textContent = '🎨 Modern';
                 
                 // Initialize terminal UI features
                 initTerminalUI();
+                // Re-check statuses for terminal mode
+                checkAllStatuses();
             } else {
                 // Switch to Modern Mode
                 body.classList.remove('terminal-mode');
                 terminalStyles.disabled = true;
                 tuicssLink.disabled = true;
-                toggleBtn.textContent = '⚡ Terminal Mode';
+                toggleBtn.textContent = '⚡ Terminal';
             }
             
             // Save preference to localStorage
@@ -1232,8 +1615,460 @@
             }
         }
 
+        // Status checking functionality
+        const statusCache = new Map();
+        let statusCheckInterval = null;
+
+        // Ping Console Functions
+        function togglePingConsole() {
+            const console = document.getElementById('pingConsole');
+            console.style.display = console.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function clearPingConsole() {
+            document.getElementById('pingOutput').innerHTML = '';
+        }
+        
+        function pingLog(message, type = 'info') {
+            const output = document.getElementById('pingOutput');
+            const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+            let color = '#0f0';
+            let prefix = '';
+            
+            switch(type) {
+                case 'success': 
+                    color = '#0f0'; 
+                    prefix = '✓';
+                    break;
+                case 'error': 
+                    color = '#f00'; 
+                    prefix = '✗';
+                    break;
+                case 'warning': 
+                    color = '#ff0'; 
+                    prefix = '⚠';
+                    break;
+                case 'ping': 
+                    color = '#0ff'; 
+                    prefix = '🔍';
+                    break;
+                default: 
+                    color = '#fff'; 
+                    prefix = '•';
+            }
+            
+            const line = `<span style="color: #888">[${timestamp}]</span> <span style="color: ${color}">${prefix} ${message}</span>\n`;
+            output.innerHTML += line;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Ping-style URL status checker with multiple detection methods
+        async function checkUrlStatus(url) {
+            console.log(`🔍 Pinging: ${url}`);
+            pingLog(`PING ${url}`, 'ping');
+            
+            // First, check for mixed content issues
+            if (url.startsWith('http://') && window.location.protocol === 'https:') {
+                console.warn(`⚠️ ${url} - HTTP blocked from HTTPS context (mixed content)`);
+                pingLog(`  HTTP blocked (mixed content policy)`, 'warning');
+                return 'offline';
+            }
+            
+            // Try multiple ping methods in sequence
+            const pingMethods = [
+                { name: 'Performance Ping', fn: performancePing },
+                { name: 'Fetch Ping', fn: fetchPing },
+                { name: 'Image Beacon', fn: imageBeaconPing },
+                { name: 'Script Tag', fn: scriptTagPing }
+            ];
+            
+            for (const method of pingMethods) {
+                try {
+                    console.log(`  Trying ${method.name}...`);
+                    pingLog(`  Trying ${method.name}...`, 'info');
+                    const startTime = performance.now();
+                    const result = await method.fn(url);
+                    const elapsed = Math.round(performance.now() - startTime);
+                    
+                    if (result !== 'unknown') {
+                        console.log(`  ✓ ${method.name} result: ${result}`);
+                        if (result === 'online') {
+                            pingLog(`  ✓ ${method.name}: ONLINE (${elapsed}ms)`, 'success');
+                        } else {
+                            pingLog(`  ✗ ${method.name}: OFFLINE`, 'error');
+                        }
+                        return result;
+                    }
+                } catch (error) {
+                    console.log(`  ✗ ${method.name} failed:`, error.message);
+                    pingLog(`  ✗ ${method.name} failed: ${error.message}`, 'error');
+                }
+            }
+            
+            // If all methods fail, make an educated guess based on URL pattern
+            const guess = guessStatusByPattern(url);
+            pingLog(`  Final result: ${guess.toUpperCase()} (pattern-based)`, guess === 'online' ? 'warning' : 'error');
+            return guess;
+        }
+        
+        // Method 1: Use Performance API to measure actual network timing
+        async function performancePing(url) {
+            return new Promise((resolve) => {
+                // This method works best for resources we can actually load
+                const testUrl = new URL(url);
+                const pingUrl = `${testUrl.origin}/favicon.ico?ping=${Date.now()}`;
+                
+                // Clear any existing entries
+                if (performance.clearResourceTimings) {
+                    performance.clearResourceTimings();
+                }
+                
+                const img = new Image();
+                const startMark = `ping-start-${Date.now()}`;
+                const timeout = setTimeout(() => {
+                    resolve('unknown');
+                }, 2000);
+                
+                performance.mark(startMark);
+                
+                img.onload = img.onerror = () => {
+                    clearTimeout(timeout);
+                    const entries = performance.getEntriesByName(pingUrl);
+                    if (entries.length > 0) {
+                        const entry = entries[0];
+                        // If we got timing data, server responded
+                        if (entry.responseEnd > 0) {
+                            resolve('online');
+                        } else {
+                            resolve('offline');
+                        }
+                    } else {
+                        // No performance entry means blocked or failed
+                        resolve('offline');
+                    }
+                };
+                
+                img.src = pingUrl;
+            });
+        }
+        
+        // Method 2: Fetch with controlled timeout
+        async function fetchPing(url) {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 3000);
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(url, {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    signal: controller.signal,
+                    cache: 'no-store',
+                    redirect: 'follow'
+                });
+                clearTimeout(timeout);
+                const endTime = Date.now();
+                
+                // In no-cors mode, we can't read the response but
+                // if fetch completes without error, server is reachable
+                console.log(`    Fetch completed in ${endTime - startTime}ms`);
+                return 'online';
+            } catch (error) {
+                clearTimeout(timeout);
+                if (error.name === 'AbortError') {
+                    return 'offline'; // Timeout
+                }
+                // Network error
+                return 'offline';
+            }
+        }
+        
+        // Method 3: Image beacon with better error handling
+        async function imageBeaconPing(url) {
+            return new Promise((resolve) => {
+                const testUrl = new URL(url);
+                const img = new Image();
+                let resolved = false;
+                
+                const timeout = setTimeout(() => {
+                    if (!resolved) {
+                        resolved = true;
+                        img.src = '';
+                        resolve('offline');
+                    }
+                }, 3000);
+                
+                img.onload = () => {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        resolve('online');
+                    }
+                };
+                
+                img.onerror = () => {
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        resolve('offline');
+                    }
+                };
+                
+                // Try multiple image paths
+                const imagePaths = [
+                    '/favicon.ico',
+                    '/favicon.png',
+                    '/apple-touch-icon.png',
+                    '/robots.txt' // Some servers return images for any 404
+                ];
+                
+                img.src = `${testUrl.origin}${imagePaths[0]}?_=${Date.now()}`;
+            });
+        }
+        
+        // Method 4: Script tag injection (works for some CORS-blocked sites)
+        async function scriptTagPing(url) {
+            return new Promise((resolve) => {
+                const script = document.createElement('script');
+                const timeout = setTimeout(() => {
+                    document.head.removeChild(script);
+                    resolve('unknown');
+                }, 2000);
+                
+                script.onload = () => {
+                    clearTimeout(timeout);
+                    document.head.removeChild(script);
+                    resolve('online');
+                };
+                
+                script.onerror = () => {
+                    clearTimeout(timeout);
+                    document.head.removeChild(script);
+                    resolve('offline');
+                };
+                
+                // Try to load a small JS file (many sites have this)
+                const testUrl = new URL(url);
+                script.src = `${testUrl.origin}/robots.txt?callback=_&_=${Date.now()}`;
+                script.async = true;
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Fallback: Make educated guess based on URL pattern
+        function guessStatusByPattern(url) {
+            console.log(`  ⚠️ All ping methods failed, guessing based on pattern`);
+            
+            // Known reliable domains
+            if (url.includes('github.io')) {
+                // GitHub Pages are usually reliable
+                return 'online';
+            }
+            
+            if (url.includes('ondigitalocean.app')) {
+                // DigitalOcean apps are usually up
+                return 'online';
+            }
+            
+            if (url.includes('cloudapp.azure.com')) {
+                // Azure apps might be behind firewall or down
+                // Conservative approach
+                return 'offline';
+            }
+            
+            // Default to offline if we can't determine
+            return 'offline';
+        }
+
+        async function updateLinkStatus(linkId, url) {
+            try {
+                // Update modern UI status
+                const statusBadge = document.getElementById(`status-${linkId}`);
+                const terminalStatus = document.getElementById(`terminal-status-${linkId}`);
+
+                // Verify elements exist
+                if (!statusBadge && !terminalStatus) {
+                    console.warn(`Status elements not found for linkId: ${linkId}`);
+                    return;
+                }
+
+                // Set to checking state
+                if (statusBadge) {
+                    statusBadge.className = 'status-badge checking';
+                    statusBadge.innerHTML = `
+                        <span class="status-dot"></span>
+                        <span class="status-label">Checking</span>
+                    `;
+                }
+                if (terminalStatus) {
+                    terminalStatus.className = 'terminal-status checking';
+                    terminalStatus.textContent = 'PING';
+                }
+
+                // Simulate response time
+                const startTime = Date.now();
+                
+                // Check the actual status
+                const status = await checkUrlStatus(url);
+                const responseTime = Date.now() - startTime;
+                statusCache.set(url, { status, timestamp: Date.now(), responseTime });
+
+            // Update UI based on status with smooth transition
+            if (statusBadge) {
+                // Add transition effect
+                statusBadge.style.transform = 'scale(0.95)';
+                statusBadge.style.opacity = '0.8';
+                
+                setTimeout(() => {
+                    statusBadge.className = `status-badge ${status}`;
+                    const statusText = status === 'online' ? 'Online' : 'Offline';
+                    const responseTimeText = responseTime < 500 ? 'Fast' : responseTime < 1000 ? 'Good' : 'Slow';
+                    const lastChecked = new Date().toLocaleTimeString();
+                    statusBadge.setAttribute('title', `Last checked: ${lastChecked}\nClick to refresh`);
+                    statusBadge.innerHTML = `
+                        <span class="status-dot"></span>
+                        <span class="status-label">${statusText}</span>
+                        ${status === 'online' && responseTime ? `<span class="response-time" title="${responseTime}ms">${responseTimeText}</span>` : ''}
+                    `;
+                    
+                    // Restore scale
+                    setTimeout(() => {
+                        statusBadge.style.transform = '';
+                        statusBadge.style.opacity = '';
+                    }, 50);
+                }, 100);
+            }
+            if (terminalStatus) {
+                terminalStatus.className = `terminal-status ${status}`;
+                if (status === 'online') {
+                    terminalStatus.textContent = `UP:${responseTime}ms`;
+                } else {
+                    terminalStatus.textContent = 'DOWN';
+                }
+            }
+            } catch (error) {
+                console.error(`Error updating status for ${linkId}:`, error);
+                // Set to offline on error
+                const statusBadge = document.getElementById(`status-${linkId}`);
+                const terminalStatus = document.getElementById(`terminal-status-${linkId}`);
+                
+                if (statusBadge) {
+                    statusBadge.className = 'status-badge offline';
+                    statusBadge.innerHTML = `
+                        <span class="status-dot"></span>
+                        <span class="status-label">Error</span>
+                    `;
+                }
+                if (terminalStatus) {
+                    terminalStatus.className = 'terminal-status offline';
+                    terminalStatus.textContent = 'ERR';
+                }
+            }
+        }
+
+        async function checkAllStatuses() {
+            if (!portalData || !portalData.links) return;
+
+            const uniqueUrls = new Map();
+            portalData.links.filter(link => link.enabled).forEach((link, index) => {
+                const linkId = `link-${index}`; // Always use index for consistent unique ID
+                if (!uniqueUrls.has(link.url)) {
+                    uniqueUrls.set(link.url, []);
+                }
+                uniqueUrls.get(link.url).push(linkId);
+            });
+
+            // Check each unique URL
+            for (const [url, linkIds] of uniqueUrls) {
+                // Check cache first
+                const cached = statusCache.get(url);
+                const cacheAge = cached ? Date.now() - cached.timestamp : Infinity;
+                
+                if (cacheAge < 30000) { // Use cache if less than 30 seconds old
+                    linkIds.forEach(linkId => {
+                        const statusBadge = document.getElementById(`status-${linkId}`);
+                        const terminalStatus = document.getElementById(`terminal-status-${linkId}`);
+                        
+                        if (statusBadge) {
+                            statusBadge.className = `status-badge ${cached.status}`;
+                            const statusText = cached.status === 'online' ? 'Online' : 'Offline';
+                            const responseTimeText = cached.responseTime && cached.responseTime < 500 ? 'Fast' : cached.responseTime < 1000 ? 'Good' : 'Slow';
+                            const lastChecked = new Date(cached.timestamp).toLocaleTimeString();
+                            statusBadge.setAttribute('title', `Last checked: ${lastChecked}\nClick to refresh`);
+                            statusBadge.setAttribute('onclick', `event.preventDefault(); event.stopPropagation(); updateLinkStatus('${linkId}', '${url}'); return false;`);
+                            statusBadge.innerHTML = `
+                                <span class="status-dot"></span>
+                                <span class="status-label">${statusText}</span>
+                                ${cached.status === 'online' && cached.responseTime ? `<span class="response-time" title="${cached.responseTime}ms">${responseTimeText}</span>` : ''}
+                            `;
+                        }
+                        if (terminalStatus) {
+                            terminalStatus.className = `terminal-status ${cached.status}`;
+                            if (cached.status === 'online' && cached.responseTime) {
+                                terminalStatus.textContent = `UP:${cached.responseTime}ms`;
+                            } else {
+                                terminalStatus.textContent = 'DOWN';
+                            }
+                        }
+                    });
+                } else {
+                    // Check status for all link IDs with this URL
+                    // Use Promise.all to update all statuses concurrently
+                    Promise.all(linkIds.map(linkId => updateLinkStatus(linkId, url)));
+                }
+            }
+        }
+
+        // Auto-refresh status every 60 seconds
+        function startStatusMonitoring() {
+            if (statusCheckInterval) {
+                clearInterval(statusCheckInterval);
+            }
+            statusCheckInterval = setInterval(() => {
+                checkAllStatuses();
+            }, 60000);
+        }
+        
+        // Manual refresh all statuses
+        function refreshAllStatuses() {
+            // Clear cache to force fresh check
+            statusCache.clear();
+            
+            // Visual feedback
+            const refreshBtn = event?.target;
+            if (refreshBtn) {
+                const originalText = refreshBtn.textContent;
+                refreshBtn.textContent = '⏳ Refreshing...';
+                refreshBtn.disabled = true;
+                
+                setTimeout(() => {
+                    refreshBtn.textContent = originalText;
+                    refreshBtn.disabled = false;
+                }, 2000);
+            }
+            
+            // Check all statuses
+            checkAllStatuses();
+        }
+
+        // Stop monitoring when page is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (statusCheckInterval) {
+                    clearInterval(statusCheckInterval);
+                    statusCheckInterval = null;
+                }
+            } else {
+                checkAllStatuses();
+                startStatusMonitoring();
+            }
+        });
+
         // Load portal data on page load
-        window.addEventListener('DOMContentLoaded', loadPortalData);
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPortalData();
+            // Note: startStatusMonitoring is now called from initializePortal after data loads
+        });
     </script>
 </body>
 </html>
