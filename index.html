@@ -1670,8 +1670,13 @@
             // First, check for mixed content issues
             if (url.startsWith('http://') && window.location.protocol === 'https:') {
                 console.warn(`⚠️ ${url} - HTTP blocked from HTTPS context (mixed content)`);
-                pingLog(`  HTTP blocked (mixed content policy)`, 'warning');
-                return 'offline';
+                pingLog(`  Mixed content: Cannot check HTTP from HTTPS`, 'warning');
+                pingLog(`  Assuming ONLINE (click link to verify)`, 'info');
+                // For known Azure resources, assume they're online since we can't check from HTTPS
+                if (url.includes('cloudapp.azure.com')) {
+                    return 'online';
+                }
+                return 'unknown';
             }
             
             // Try multiple ping methods in sequence
@@ -1921,14 +1926,23 @@
                 
                 setTimeout(() => {
                     statusBadge.className = `status-badge ${status}`;
-                    const statusText = status === 'online' ? 'Online' : 'Offline';
+                    let statusText = status === 'online' ? 'Online' : 'Offline';
+                    let statusNote = '';
+                    
+                    // Check if this is an HTTP resource viewed from HTTPS
+                    if (url && url.startsWith('http://') && window.location.protocol === 'https:' && status === 'online') {
+                        statusNote = ' (assumed)';
+                        statusBadge.setAttribute('title', 'Status assumed - HTTP resource cannot be checked from HTTPS page\nClick the link to verify');
+                    } else {
+                        const lastChecked = new Date().toLocaleTimeString();
+                        statusBadge.setAttribute('title', `Last checked: ${lastChecked}\nClick to refresh`);
+                    }
+                    
                     const responseTimeText = responseTime < 500 ? 'Fast' : responseTime < 1000 ? 'Good' : 'Slow';
-                    const lastChecked = new Date().toLocaleTimeString();
-                    statusBadge.setAttribute('title', `Last checked: ${lastChecked}\nClick to refresh`);
                     statusBadge.innerHTML = `
                         <span class="status-dot"></span>
-                        <span class="status-label">${statusText}</span>
-                        ${status === 'online' && responseTime ? `<span class="response-time" title="${responseTime}ms">${responseTimeText}</span>` : ''}
+                        <span class="status-label">${statusText}${statusNote}</span>
+                        ${status === 'online' && responseTime && !statusNote ? `<span class="response-time" title="${responseTime}ms">${responseTimeText}</span>` : ''}
                     `;
                     
                     // Restore scale
