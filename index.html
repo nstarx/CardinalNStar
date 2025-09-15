@@ -631,16 +631,404 @@
                 font-size: 0.75rem !important;
                 min-width: 100px !important;
             }
+            .theme-selector {
+                padding: 8px 12px !important;
+                font-size: 0.75rem !important;
+                min-width: 120px !important;
+            }
         }
-        
+
         @media (max-width: 480px) {
             .ui-controls {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .ui-toggle {
+            .ui-toggle, .theme-selector {
                 width: 100%;
                 text-align: center;
+            }
+        }
+    </style>
+
+    <style id="western-styles" disabled>
+        /* Western Spaghetti Theme */
+        body.western-mode {
+            background: linear-gradient(180deg, #8B5A2B 0%, #D2691E 50%, #CD853F 100%);
+            font-family: 'Playfair Display', 'Georgia', serif;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Desert background pattern */
+        body.western-mode::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 80%, transparent 50%, rgba(139, 69, 19, 0.3) 50.5%),
+                radial-gradient(circle at 80% 20%, transparent 45%, rgba(205, 133, 63, 0.3) 45.5%),
+                radial-gradient(circle at 40% 40%, transparent 52%, rgba(210, 105, 30, 0.2) 52.5%);
+            background-size: 100px 100px, 150px 150px, 200px 200px;
+            animation: tumbleWeed 30s linear infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes tumbleWeed {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100px); }
+        }
+
+        /* Hide modern UI elements */
+        body.western-mode .container,
+        body.western-mode .compass-background {
+            display: none !important;
+        }
+
+        /* Western UI Container */
+        .western-ui {
+            display: none !important;
+        }
+
+        body.western-mode .western-ui {
+            display: block !important;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Saloon-style header */
+        .western-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 30px;
+            background: linear-gradient(135deg, #654321 0%, #8B4513 100%);
+            border: 8px solid #4A2C17;
+            box-shadow:
+                inset 0 0 50px rgba(0,0,0,0.5),
+                0 10px 30px rgba(0,0,0,0.7);
+            transform: perspective(800px) rotateX(2deg);
+        }
+
+        .western-header::before,
+        .western-header::after {
+            content: '★';
+            position: absolute;
+            top: 20px;
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: sheriffStar 2s ease-in-out infinite;
+        }
+
+        .western-header::before { left: 40px; }
+        .western-header::after { right: 40px; animation-delay: 1s; }
+
+        @keyframes sheriffStar {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        .western-title {
+            font-size: 4rem;
+            color: #FFD700;
+            text-shadow:
+                3px 3px 0 #8B4513,
+                6px 6px 0 #654321,
+                9px 9px 15px rgba(0,0,0,0.8);
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-family: 'Rye', 'Georgia', serif;
+            margin: 20px 0;
+            animation: westernGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes westernGlow {
+            0%, 100% { text-shadow:
+                3px 3px 0 #8B4513,
+                6px 6px 0 #654321,
+                9px 9px 15px rgba(0,0,0,0.8),
+                0 0 30px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow:
+                3px 3px 0 #8B4513,
+                6px 6px 0 #654321,
+                9px 9px 15px rgba(0,0,0,0.8),
+                0 0 50px rgba(255, 215, 0, 0.8); }
+        }
+
+        .western-subtitle {
+            color: #F5DEB3;
+            font-size: 1.5rem;
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            margin-top: 10px;
+        }
+
+        /* Wanted poster style cards */
+        .western-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .wanted-poster {
+            background: #F4E4C1;
+            border: 3px solid #8B4513;
+            padding: 20px;
+            position: relative;
+            transform: rotate(-1deg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            box-shadow:
+                5px 5px 15px rgba(0,0,0,0.5),
+                inset 0 0 30px rgba(139, 69, 19, 0.1);
+        }
+
+        .wanted-poster:nth-child(even) {
+            transform: rotate(1deg);
+        }
+
+        .wanted-poster:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow:
+                8px 8px 25px rgba(0,0,0,0.7),
+                inset 0 0 30px rgba(139, 69, 19, 0.2);
+            z-index: 10;
+        }
+
+        .wanted-poster::before {
+            content: 'WANTED';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #8B0000;
+            color: #FFD700;
+            padding: 5px 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border: 2px solid #FFD700;
+            font-family: 'Rye', serif;
+        }
+
+        .poster-content {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .poster-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #8B4513;
+            border-radius: 50%;
+            border: 4px solid #654321;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .poster-icon svg {
+            width: 50px;
+            height: 50px;
+            fill: #FFD700;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .poster-title {
+            font-size: 1.8rem;
+            color: #8B4513;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Rye', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 rgba(139, 69, 19, 0.2);
+        }
+
+        .poster-description {
+            color: #654321;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        .poster-reward {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #8B4513;
+            font-size: 1.2rem;
+            color: #8B0000;
+            font-weight: bold;
+        }
+
+        .poster-url {
+            color: #654321;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0.8;
+            word-break: break-all;
+        }
+
+        /* Western status indicator */
+        .western-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 3px solid #654321;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 5;
+        }
+
+        .western-status.online {
+            background: #90EE90;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .western-status.online::after {
+            content: '✓';
+            color: #228B22;
+        }
+
+        .western-status.offline {
+            background: #FFB6C1;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .western-status.offline::after {
+            content: '✗';
+            color: #8B0000;
+        }
+
+        .western-status.checking {
+            background: #FFFFE0;
+            animation: westernSpin 1s linear infinite;
+        }
+
+        .western-status.checking::after {
+            content: '?';
+            color: #DAA520;
+        }
+
+        @keyframes westernSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Decorative elements */
+        .cactus-decoration {
+            position: fixed;
+            bottom: 20px;
+            left: 30px;
+            width: 100px;
+            height: 150px;
+            opacity: 0.3;
+            z-index: -1;
+            font-size: 8rem;
+            color: #2F4F2F;
+            transform: scaleX(-1);
+        }
+
+        .horseshoe {
+            position: fixed;
+            top: 100px;
+            right: 50px;
+            font-size: 4rem;
+            color: #8B4513;
+            opacity: 0.2;
+            transform: rotate(15deg);
+            z-index: -1;
+        }
+
+        /* Footer saloon doors */
+        .saloon-footer {
+            margin-top: 60px;
+            padding: 20px;
+            background: linear-gradient(180deg, #654321 0%, #8B4513 100%);
+            border: 4px solid #4A2C17;
+            text-align: center;
+            color: #F5DEB3;
+            font-size: 1.1rem;
+            position: relative;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        }
+
+        .saloon-footer::before,
+        .saloon-footer::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            width: 80px;
+            height: 30px;
+            background: #654321;
+            border: 3px solid #4A2C17;
+            border-bottom: none;
+        }
+
+        .saloon-footer::before { left: 30%; }
+        .saloon-footer::after { right: 30%; }
+
+        /* Western mode UI controls */
+        body.western-mode .ui-toggle {
+            background: linear-gradient(135deg, #8B4513, #654321) !important;
+            color: #FFD700 !important;
+            border: 3px solid #4A2C17 !important;
+            font-family: 'Rye', serif !important;
+            letter-spacing: 1px !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+            box-shadow:
+                4px 4px 0 rgba(0,0,0,0.5),
+                8px 8px 15px rgba(0,0,0,0.3) !important;
+        }
+
+        body.western-mode .ui-toggle:hover {
+            transform: translate(-2px, -2px) rotate(-2deg) !important;
+            box-shadow:
+                6px 6px 0 rgba(0,0,0,0.5),
+                10px 10px 20px rgba(0,0,0,0.4) !important;
+        }
+
+        /* Loading screen for Western mode */
+        body.western-mode .loading-screen {
+            background: linear-gradient(180deg, #8B5A2B 0%, #D2691E 100%);
+        }
+
+        body.western-mode .loading-spinner {
+            border-color: rgba(255, 215, 0, 0.3);
+            border-top-color: #FFD700;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .western-title {
+                font-size: 2.5rem;
+            }
+            .western-links-grid {
+                grid-template-columns: 1fr;
+            }
+            .western-header::before,
+            .western-header::after {
+                display: none;
             }
         }
     </style>
@@ -962,6 +1350,84 @@
             justify-content: flex-end;
             max-width: 500px;
         }
+
+        /* Theme Selector Dropdown */
+        .theme-selector {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            box-shadow:
+                3px 3px 0 rgba(0, 0, 0, 0.3),
+                6px 6px 0 rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+            border-radius: 0;
+            min-width: 140px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 20px;
+            padding-right: 35px;
+        }
+
+        .theme-selector:hover {
+            transform: translate(-2px, -2px);
+            box-shadow:
+                6px 6px 0 rgba(0, 0, 0, 0.3),
+                12px 12px 0 rgba(102, 126, 234, 0.2);
+        }
+
+        .theme-selector:focus {
+            outline: 2px solid #00ff00;
+            outline-offset: 2px;
+        }
+
+        .theme-selector option {
+            background: #333;
+            color: white;
+            padding: 10px;
+        }
+
+        /* Terminal mode theme selector */
+        .terminal-mode .theme-selector {
+            background: #c0c0c0 !important;
+            color: #000000 !important;
+            border: 2px solid !important;
+            border-color: #ffffff #808080 #808080 #ffffff !important;
+            box-shadow: none !important;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+        }
+
+        .terminal-mode .theme-selector:hover {
+            background-color: #000084 !important;
+            color: #ffffff !important;
+            transform: none !important;
+        }
+
+        /* Western mode theme selector */
+        .western-mode .theme-selector {
+            background: linear-gradient(135deg, #8B4513, #654321) !important;
+            color: #FFD700 !important;
+            border: 3px solid #4A2C17 !important;
+            font-family: 'Rye', serif !important;
+            box-shadow:
+                4px 4px 0 rgba(0,0,0,0.5),
+                8px 8px 15px rgba(0,0,0,0.3) !important;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFD700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+        }
+
+        .western-mode .theme-selector:hover {
+            transform: translate(-2px, -2px) rotate(-2deg) !important;
+        }
         
         /* UI Toggle Button */
         .ui-toggle {
@@ -1041,8 +1507,23 @@
             overflow: hidden !important;
         }
 
+        body:not(.western-mode) .western-ui {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+
         body.terminal-mode .container,
-        body.terminal-mode .compass-background {
+        body.terminal-mode .compass-background,
+        body.terminal-mode .western-ui {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+
+        body.western-mode .terminal-ui {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
@@ -1061,6 +1542,11 @@
 
     <!-- UI Controls -->
     <div class="ui-controls">
+        <select class="theme-selector" id="themeSelector" onchange="switchTheme(this.value)" title="Select theme">
+            <option value="modern">🎨 Modern</option>
+            <option value="terminal">⚡ Terminal</option>
+            <option value="western">🤠 Western</option>
+        </select>
         <button class="ui-toggle ping-console-btn" onclick="togglePingConsole()" title="Show/Hide ping console" style="
             background: linear-gradient(135deg, #2196f3, #1976d2);
         ">
@@ -1070,9 +1556,6 @@
             background: linear-gradient(135deg, #4caf50, #45a049);
         ">
             🔄 Refresh
-        </button>
-        <button class="ui-toggle" id="uiToggleBtn" onclick="toggleUI()">
-            ⚡ Terminal
         </button>
     </div>
     
@@ -1220,6 +1703,30 @@
         </svg>
     </div>
 
+    <!-- Western UI (Hidden by default) -->
+    <div class="western-ui">
+        <!-- Decorative elements -->
+        <div class="cactus-decoration">🌵</div>
+        <div class="horseshoe">🧲</div>
+
+        <!-- Western Header -->
+        <div class="western-header">
+            <h1 class="western-title" id="westernTitle">NSTARX SALOON</h1>
+            <p class="western-subtitle" id="westernSubtitle">The Wildest Links in the Digital Frontier</p>
+        </div>
+
+        <!-- Western Links Grid -->
+        <div class="western-links-grid" id="westernLinksGrid">
+            <!-- Western links will be dynamically inserted here -->
+        </div>
+
+        <!-- Saloon Footer -->
+        <div class="saloon-footer">
+            <p>🎯 High Noon at the Digital Corral 🎯</p>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Est. 2024 | Where Code Meets the Wild West</p>
+        </div>
+    </div>
+
     <!-- Terminal UI (Hidden by default) -->
     <div class="terminal-ui">
         <!-- ASCII Art Background -->
@@ -1266,6 +1773,7 @@
         // Global variables
         let portalData = null;
         let isTerminalMode = false;
+        let isWesternMode = false;
 
         // Load JSON data
         async function loadPortalData() {
@@ -1313,6 +1821,9 @@
 
             // Generate terminal navigation
             generateTerminalNav();
+
+            // Generate western UI links
+            generateWesternLinks();
 
             // Setup keyboard shortcuts
             setupKeyboardShortcuts();
@@ -1410,6 +1921,46 @@
             }
         }
 
+        // Generate western UI links
+        function generateWesternLinks() {
+            const grid = document.getElementById('westernLinksGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            portalData.links.filter(link => link.enabled).forEach((link, index) => {
+                const uniqueLinkId = `link-${index}`;
+                const poster = document.createElement('a');
+                poster.href = link.url;
+                poster.className = 'wanted-poster';
+                poster.target = '_blank';
+                poster.setAttribute('data-link-id', uniqueLinkId);
+                poster.setAttribute('data-url', link.url);
+
+                poster.innerHTML = `
+                    <div class="western-status checking" id="western-status-${uniqueLinkId}"></div>
+                    <div class="poster-content">
+                        <div class="poster-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="${link.svgPath}"/>
+                            </svg>
+                        </div>
+                        <h2 class="poster-title">${link.shortTitle || link.title}</h2>
+                        <p class="poster-description">${link.description}</p>
+                        <div class="poster-reward">REWARD: ${link.badge}</div>
+                        <p class="poster-url">Trail: ${link.displayUrl}</p>
+                    </div>
+                `;
+                grid.appendChild(poster);
+            });
+
+            // Start status checking if in western mode
+            if (isWesternMode) {
+                setTimeout(() => {
+                    checkAllStatuses();
+                }, 100);
+            }
+        }
+
         // Generate terminal navigation bar
         function generateTerminalNav() {
             const navBar = document.getElementById('terminalNavBar');
@@ -1442,36 +1993,64 @@
             });
         }
 
-        // UI Toggle Functionality
-        function toggleUI() {
-            isTerminalMode = !isTerminalMode;
+        // Unified Theme Switching Function
+        function switchTheme(theme) {
             const body = document.body;
-            const toggleBtn = document.getElementById('uiToggleBtn');
             const terminalStyles = document.getElementById('terminal-styles');
+            const westernStyles = document.getElementById('western-styles');
             const tuicssLink = document.getElementById('tuicss-stylesheet');
-            
-            if (isTerminalMode) {
-                // Switch to Terminal Mode
-                body.classList.add('terminal-mode');
-                terminalStyles.disabled = false;
-                tuicssLink.disabled = false;
-                toggleBtn.textContent = '🎨 Modern';
-                
-                // Initialize terminal UI features
-                initTerminalUI();
-                // Re-check statuses for terminal mode
-                checkAllStatuses();
-            } else {
-                // Switch to Modern Mode
-                body.classList.remove('terminal-mode');
-                terminalStyles.disabled = true;
-                tuicssLink.disabled = true;
-                toggleBtn.textContent = '⚡ Terminal';
+            const themeSelector = document.getElementById('themeSelector');
+
+            // Reset all theme classes and styles first
+            body.classList.remove('terminal-mode', 'western-mode');
+            terminalStyles.disabled = true;
+            westernStyles.disabled = true;
+            tuicssLink.disabled = true;
+            isTerminalMode = false;
+            isWesternMode = false;
+
+            // Clear any terminal intervals
+            if (window.clockInterval) {
+                clearInterval(window.clockInterval);
+                window.clockInterval = null;
             }
-            
+            if (window.asciiInterval) {
+                clearInterval(window.asciiInterval);
+                window.asciiInterval = null;
+            }
+
+            // Apply the selected theme
+            switch (theme) {
+                case 'terminal':
+                    body.classList.add('terminal-mode');
+                    terminalStyles.disabled = false;
+                    tuicssLink.disabled = false;
+                    isTerminalMode = true;
+                    // Initialize terminal UI features
+                    initTerminalUI();
+                    break;
+
+                case 'western':
+                    body.classList.add('western-mode');
+                    westernStyles.disabled = false;
+                    isWesternMode = true;
+                    break;
+
+                case 'modern':
+                default:
+                    // Modern theme is the default, no additional styles needed
+                    break;
+            }
+
+            // Update the selector to match current theme
+            themeSelector.value = theme;
+
+            // Re-check statuses for the new theme
+            checkAllStatuses();
+
             // Save preference to localStorage
             if (portalData?.config?.enableLocalStorage) {
-                localStorage.setItem('uiMode', isTerminalMode ? 'terminal' : 'modern');
+                localStorage.setItem('uiMode', theme);
             }
         }
 
@@ -1479,10 +2058,19 @@
         function loadUIPreference() {
             if (portalData?.config?.enableLocalStorage) {
                 const savedMode = localStorage.getItem('uiMode');
-                if (savedMode === 'terminal') {
-                    toggleUI();
+                if (savedMode && ['modern', 'terminal', 'western'].includes(savedMode)) {
+                    switchTheme(savedMode);
                 }
             }
+        }
+
+        // Backwards compatibility - redirect old toggle functions
+        function toggleUI() {
+            switchTheme(isTerminalMode ? 'modern' : 'terminal');
+        }
+
+        function toggleWestern() {
+            switchTheme(isWesternMode ? 'modern' : 'western');
         }
 
         // Terminal UI Functions
@@ -1890,9 +2478,10 @@
                 // Update modern UI status
                 const statusBadge = document.getElementById(`status-${linkId}`);
                 const terminalStatus = document.getElementById(`terminal-status-${linkId}`);
+                const westernStatus = document.getElementById(`western-status-${linkId}`);
 
                 // Verify elements exist
-                if (!statusBadge && !terminalStatus) {
+                if (!statusBadge && !terminalStatus && !westernStatus) {
                     console.warn(`Status elements not found for linkId: ${linkId}`);
                     return;
                 }
@@ -1908,6 +2497,9 @@
                 if (terminalStatus) {
                     terminalStatus.className = 'terminal-status checking';
                     terminalStatus.textContent = 'PING';
+                }
+                if (westernStatus) {
+                    westernStatus.className = 'western-status checking';
                 }
 
                 // Simulate response time
@@ -1960,12 +2552,16 @@
                     terminalStatus.textContent = 'DOWN';
                 }
             }
+            if (westernStatus) {
+                westernStatus.className = `western-status ${status}`;
+            }
             } catch (error) {
                 console.error(`Error updating status for ${linkId}:`, error);
                 // Set to offline on error
                 const statusBadge = document.getElementById(`status-${linkId}`);
                 const terminalStatus = document.getElementById(`terminal-status-${linkId}`);
-                
+                const westernStatus = document.getElementById(`western-status-${linkId}`);
+
                 if (statusBadge) {
                     statusBadge.className = 'status-badge offline';
                     statusBadge.innerHTML = `
@@ -1976,6 +2572,9 @@
                 if (terminalStatus) {
                     terminalStatus.className = 'terminal-status offline';
                     terminalStatus.textContent = 'ERR';
+                }
+                if (westernStatus) {
+                    westernStatus.className = 'western-status offline';
                 }
             }
         }
@@ -2002,6 +2601,7 @@
                     linkIds.forEach(linkId => {
                         const statusBadge = document.getElementById(`status-${linkId}`);
                         const terminalStatus = document.getElementById(`terminal-status-${linkId}`);
+                        const westernStatus = document.getElementById(`western-status-${linkId}`);
                         
                         if (statusBadge) {
                             statusBadge.className = `status-badge ${cached.status}`;
@@ -2023,6 +2623,9 @@
                             } else {
                                 terminalStatus.textContent = 'DOWN';
                             }
+                        }
+                        if (westernStatus) {
+                            westernStatus.className = `western-status ${cached.status}`;
                         }
                     });
                 } else {
