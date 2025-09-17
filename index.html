@@ -1872,20 +1872,68 @@
             overflow: hidden !important;
         }
 
-        body.terminal-mode .container,
-        body.terminal-mode .compass-background,
-        body.terminal-mode .western-ui {
+        body:not(.carnival-mode) .carnival-ui {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
             overflow: hidden !important;
         }
 
-        body.western-mode .terminal-ui {
+        body.terminal-mode .container,
+        body.terminal-mode .compass-background,
+        body.terminal-mode .western-ui,
+        body.terminal-mode .carnival-ui {
             display: none !important;
             visibility: hidden !important;
             height: 0 !important;
             overflow: hidden !important;
+        }
+
+        body.western-mode .terminal-ui,
+        body.western-mode .carnival-ui,
+        body.western-mode .container {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+
+        body.carnival-mode .terminal-ui,
+        body.carnival-mode .western-ui,
+        body.carnival-mode .container {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+
+        /* Critical: Override pseudo-elements when themes are not active */
+        /* This needs to be in the main styles to always apply */
+        body:not(.western-mode)::before,
+        body:not(.western-mode)::after {
+            content: '' !important;
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        body:not(.carnival-mode)::before,
+        body:not(.carnival-mode)::after {
+            content: '' !important;
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+
+        /* Hide theme-specific header decorations when not in their respective modes */
+        body:not(.western-mode) .western-header::before,
+        body:not(.western-mode) .western-header::after,
+        body:not(.carnival-mode) .carnival-header::before,
+        body:not(.carnival-mode) .carnival-header::after {
+            content: '' !important;
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
     </style>
 </head>
@@ -2432,6 +2480,18 @@
         isTerminalMode = false;
         isWesternMode = false;
         isCarnivalMode = false;
+
+        // Remove any theme-specific header classes
+        const header = document.querySelector('.header');
+        if (header) {
+            header.classList.remove('western-header', 'carnival-header', 'terminal-header');
+        }
+
+        // Remove any theme-specific container classes
+        const container = document.querySelector('.container');
+        if (container) {
+            container.classList.remove('western-container', 'carnival-container', 'terminal-container');
+        }
 
         // Clear any terminal intervals
         if (window.clockInterval) {
