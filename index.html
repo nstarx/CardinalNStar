@@ -8,60 +8,13 @@
     <!-- TuiCss CSS (loaded conditionally) -->
     <link id="tuicss-stylesheet" rel="stylesheet" href="https://unpkg.com/tuicss@2.1.1/dist/tuicss.min.css" disabled>
 
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="assets/css/common.css">
+
     <style id="modern-styles">
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Page-specific background color */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: #1a0f2e;
-            min-height: 100vh;
-            padding: 40px 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Loading screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1a0f2e;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loading-content {
-            text-align: center;
-            color: white;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(102, 126, 234, 0.3);
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         /* Isogrid background - very subtle */
@@ -122,17 +75,6 @@
             mix-blend-mode: screen;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease;
-        }
-
         .header h1 {
             color: white;
             font-size: 3rem;
@@ -174,11 +116,6 @@
             animation: none;
         }
 
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
         .header p {
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.2rem;
@@ -188,30 +125,6 @@
             text-shadow:
                     2px 2px 0 rgba(102, 126, 234, 0.5),
                     4px 4px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .link-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 0;
-            padding: 30px;
-            box-shadow:
-                    4px 4px 0 rgba(0, 0, 0, 0.2),
-                    8px 8px 0 rgba(102, 126, 234, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            overflow: visible;
-            border: 2px solid #667eea;
         }
 
         .link-card .hover-cursor {
@@ -265,30 +178,9 @@
             z-index: 1;
         }
 
-        .link-card:hover {
-            transform: translate(-4px, -4px);
-            box-shadow:
-                    8px 8px 0 rgba(0, 0, 0, 0.3),
-                    16px 16px 0 rgba(102, 126, 234, 0.2);
-            animation: pixelShift 0.3s infinite steps(4);
-        }
-
         .link-card:hover::after {
             opacity: 1;
             animation: scanlines 1s infinite linear;
-        }
-
-        @keyframes pixelShift {
-            0% { background-position: 0 0; }
-            25% { background-position: 2px 0; }
-            50% { background-position: 2px 2px; }
-            75% { background-position: 0 2px; }
-            100% { background-position: 0 0; }
-        }
-
-        @keyframes scanlines {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 0 8px, 8px 0; }
         }
 
         .link-card::before {
@@ -299,25 +191,6 @@
             width: 100%;
             height: 4px;
             background: linear-gradient(90deg, #667eea, #764ba2);
-        }
-
-        .icon-wrapper {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow:
-                    4px 4px 0 rgba(0, 0, 0, 0.3),
-                    8px 8px 0 rgba(102, 126, 234, 0.2);
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            position: relative;
-            z-index: 2;
         }
 
         .icon-wrapper::before {
@@ -335,92 +208,13 @@
             pointer-events: none;
         }
 
-        .icon {
-            width: 50px;
-            height: 50px;
-            fill: white;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            filter: contrast(1.2);
-        }
-
-        .link-card h2 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            text-shadow:
-                    1px 1px 0 rgba(102, 126, 234, 0.3),
-                    2px 2px 0 rgba(102, 126, 234, 0.1);
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .link-card .description {
-            color: #666;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .link-card .url {
-            color: #667eea;
-            font-size: 0.9rem;
-            word-break: break-all;
-            position: relative;
-            z-index: 2;
-        }
-
         /* Enhanced Status Badge Styles */
-        .status-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow:
-                    0 2px 10px rgba(0, 0, 0, 0.1),
-                    0 0 0 1px rgba(0, 0, 0, 0.05);
-            z-index: 10;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'Courier New', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            user-select: none;
-        }
 
         .status-badge:active {
             transform: scale(0.95);
         }
 
-        .status-badge:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                    0 4px 15px rgba(0, 0, 0, 0.15),
-                    0 0 0 1px rgba(0, 0, 0, 0.05);
-        }
-
         /* Status Indicator Dot */
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            position: relative;
-            display: inline-block;
-        }
 
         .status-dot::before {
             content: '';
@@ -435,13 +229,6 @@
             animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
         }
 
-        @keyframes ping {
-            75%, 100% {
-                transform: translate(-50%, -50%) scale(2);
-                opacity: 0;
-            }
-        }
-
         /* Status Text */
         .status-label {
             display: inline-block;
@@ -449,19 +236,12 @@
         }
 
         /* Checking State */
-        .status-badge.checking {
-            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
-            border: 1px solid rgba(255, 152, 0, 0.3);
-            color: #f57c00;
-        }
 
         .status-badge.checking .status-dot {
             background: #ff9800;
             animation: spin-dot 1s linear infinite;
         }
 
-        @keyframes spin-dot {
-            0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
@@ -473,30 +253,11 @@
             animation: dots 1.5s steps(4, end) infinite;
         }
 
-        @keyframes dots {
-            0%, 20% { content: '.'; }
             40% { content: '..'; }
             60%, 100% { content: '...'; }
         }
 
         /* Online State */
-        .status-badge.online {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(67, 160, 71, 0.15));
-            border: 1px solid rgba(76, 175, 80, 0.3);
-            color: #2e7d32;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
 
         .status-badge.online .status-dot {
             background: #4caf50;
@@ -515,12 +276,6 @@
         }
 
         /* Offline State */
-        .status-badge.offline {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(229, 57, 53, 0.15));
-            border: 1px solid rgba(244, 67, 54, 0.3);
-            color: #c62828;
-            animation: shake 0.5s ease;
-        }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -591,22 +346,12 @@
             box-shadow: 2px 2px 0 rgba(102, 126, 234, 0.3);
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1013,10 +758,7 @@
             background: linear-gradient(180deg, #8B5A2B 0%, #D2691E 100%);
         }
 
-        body.western-mode .loading-spinner {
-            border-color: rgba(255, 215, 0, 0.3);
-            border-top-color: #FFD700;
-        }
+        body.western-mode 
 
         /* Responsive design */
         @media (max-width: 768px) {
@@ -1344,10 +1086,7 @@
 
     <style id="terminal-styles" disabled>
         /* Hide modern UI completely when in terminal mode */
-        body.terminal-mode .container {
-            display: none !important;
-            visibility: hidden !important;
-        }
+        body.terminal-mode 
 
         body.terminal-mode .compass-background {
             display: none !important;
@@ -1891,21 +1630,11 @@
 
         body.western-mode .terminal-ui,
         body.western-mode .carnival-ui,
-        body.western-mode .container {
-            display: none !important;
-            visibility: hidden !important;
-            height: 0 !important;
-            overflow: hidden !important;
-        }
+        body.western-mode 
 
         body.carnival-mode .terminal-ui,
         body.carnival-mode .western-ui,
-        body.carnival-mode .container {
-            display: none !important;
-            visibility: hidden !important;
-            height: 0 !important;
-            overflow: hidden !important;
-        }
+        body.carnival-mode 
 
         /* Critical: Override pseudo-elements when themes are not active */
         /* This needs to be in the main styles to always apply */
@@ -3211,5 +2940,7 @@
         // Note: startStatusMonitoring is now called from initializePortal after data loads
     });
 </script>
+    <!-- Common JavaScript -->
+    <script src="assets/js/common.js"></script>
 </body>
 </html>
