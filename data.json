@@ -9,8 +9,8 @@
     "version": "1.0"
   },
   "links": [
-        {
-      "id": "docs",
+    {
+      "id": "remote_button",
       "title": "Remote Button",
       "shortTitle": "Remote Button",
       "description": "Toggle button for the demo environment.",
@@ -25,7 +25,7 @@
       "enabled": true
     },
     {
-      "id": "docs",
+      "id": "laws",
       "title": "NStarX Engineering Laws",
       "shortTitle": "Engineering Laws",
       "description": "Best Practices for AI-Assisted Development",
