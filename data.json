@@ -85,21 +85,6 @@
       "enabled": true
     },
     {
-      "id": "legacy-cluster",
-      "title": "Legacy Cluster Demo",
-      "shortTitle": "Legacy Cluster",
-      "description": "Previous generation demonstration environment showcasing the older cluster configuration and deployment architecture.",
-      "url": "http://nstarx-ops-fe2.eastus.cloudapp.azure.com",
-      "displayUrl": "nstarx-ops-fe2.eastus.cloudapp.azure.com",
-      "badge": "Legacy Demo",
-      "terminalBadge": ["LEGACY", "ARCHIVE"],
-      "icon": "💾",
-      "svgPath": "M13.18,19C13.35,19.72 13.64,20.39 14.03,21H5C3.89,21 3,20.11 3,19V5C3,3.89 3.89,3 5,3H19C20.11,3 21,3.89 21,5V11.18C20.5,11.07 20,11 19.5,11C19.33,11 19.17,11 19,11.03V5H5V19H13.18M11,7H17V9H11V7M11,11H17V11.03C16.14,11.22 15.37,11.62 14.73,12.18H11V11M11,15H12.29C12.11,15.5 12,16 12,16.5C12,17 12.11,17.5 12.29,18H11V15M21.85,21.85L21.13,23L19.5,21.4L17.87,23L17.15,21.85L18.76,20.5L17.15,19.15L17.87,18L19.5,19.6L21.13,18L21.85,19.15L20.24,20.5L21.85,21.85Z",
-      "colorClass": "yellow-168",
-      "terminalLegend": "[ LEGACY DEMO ]",
-      "enabled": true
-    },
-    {
       "id": "api-garden",
       "title": "API Design Documentation Hub",
       "shortTitle": "API Design Hub",
