@@ -1,18 +1,11 @@
 /* Common JavaScript for CardinalNStar Portal */
 
-// Initialize application
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-});
+// Note: DOMContentLoaded listener removed to avoid conflict with authentication system
+// The main index.html now handles initialization after authentication
 
 function initializeApp() {
-    // Hide loading screen if present
-    const loadingScreen = document.querySelector('.loading-screen');
-    if (loadingScreen) {
-        setTimeout(() => {
-            loadingScreen.classList.add('hidden');
-        }, 500);
-    }
+    // Note: Loading screen is now managed by the authentication system
+    // Do not auto-hide it here
 
     // Initialize theme from localStorage
     const savedTheme = localStorage.getItem('selectedTheme') || 'modern';

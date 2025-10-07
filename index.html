@@ -758,7 +758,7 @@
             background: linear-gradient(180deg, #8B5A2B 0%, #D2691E 100%);
         }
 
-        body.western-mode 
+        body.western-mode
 
         /* Responsive design */
         @media (max-width: 768px) {
@@ -1086,7 +1086,7 @@
 
     <style id="terminal-styles" disabled>
         /* Hide modern UI completely when in terminal mode */
-        body.terminal-mode 
+        body.terminal-mode
 
         body.terminal-mode .compass-background {
             display: none !important;
@@ -1630,11 +1630,11 @@
 
         body.western-mode .terminal-ui,
         body.western-mode .carnival-ui,
-        body.western-mode 
+        body.western-mode
 
         body.carnival-mode .terminal-ui,
         body.carnival-mode .western-ui,
-        body.carnival-mode 
+        body.carnival-mode
 
         /* Critical: Override pseudo-elements when themes are not active */
         /* This needs to be in the main styles to always apply */
@@ -1664,9 +1664,71 @@
             opacity: 0 !important;
             visibility: hidden !important;
         }
+
+        /* Login Form Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        #loginForm input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        #loginForm input:focus {
+            outline: none;
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        #loginForm button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
     </style>
 </head>
 <body>
+<!-- Login Screen -->
+<div id="loginScreen" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); z-index: 10000; display: none; align-items: center; justify-content: center;">
+    <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 40px; width: 400px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 48px; margin-bottom: 10px;">⭐</div>
+            <h2 style="color: white; font-size: 24px; margin: 0;">NStarX Portal</h2>
+            <p style="color: rgba(255, 255, 255, 0.6); margin-top: 10px; font-size: 14px;">Secure Access Required</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="position: relative;">
+                <i class="👤" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5);">👤</i>
+                <input type="text" id="username" placeholder="Username" required
+                       style="width: 100%; padding: 12px 12px 12px 40px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: white; font-size: 14px;">
+            </div>
+
+            <div style="position: relative;">
+                <i class="🔒" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5);">🔒</i>
+                <input type="password" id="password" placeholder="Password" required
+                       style="width: 100%; padding: 12px 12px 12px 40px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: white; font-size: 14px;">
+                <i class="👁️" id="togglePassword" onclick="togglePasswordVisibility()"
+                   style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5); cursor: pointer;">👁️</i>
+            </div>
+
+            <button type="submit"
+                    style="width: 100%; padding: 12px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 10px; color: white; font-weight: 600; font-size: 16px; cursor: pointer; transition: all 0.3s;">
+                🔐 Login
+            </button>
+
+            <div id="errorMessage" style="display: none; padding: 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #fca5a5; font-size: 14px; text-align: center;">
+                ❌ Invalid credentials
+            </div>
+        </form>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+            <p style="color: rgba(255, 255, 255, 0.4); font-size: 12px;">Protected Content • 2024</p>
+        </div>
+    </div>
+</div>
+
 <!-- Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
     <div class="loading-content">
@@ -1692,6 +1754,11 @@
             background: linear-gradient(135deg, #4caf50, #45a049);
         ">
         🔄 Refresh
+    </button>
+    <button class="ui-toggle logout-btn" onclick="logout()" title="Logout" style="
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        ">
+        🚪 Logout
     </button>
 </div>
 
@@ -1934,12 +2001,14 @@
 
     // Load JSON data
     async function loadPortalData() {
+        console.log('Loading portal data...');
         try {
             const response = await fetch('data.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             portalData = await response.json();
+            console.log('Portal data loaded successfully:', portalData);
             initializePortal();
         } catch (error) {
             console.error('Error loading portal data:', error);
@@ -1960,7 +2029,11 @@
 
     // Initialize portal with loaded data
     function initializePortal() {
-        if (!portalData) return;
+        console.log('Initializing portal with data:', portalData);
+        if (!portalData) {
+            console.error('Cannot initialize portal: portalData is null or undefined');
+            return;
+        }
 
         // Set portal titles and subtitles
         document.getElementById('portalTitle').textContent = portalData.portal.title;
@@ -1999,6 +2072,11 @@
         // Load saved UI preference
         loadUIPreference();
 
+        // Initialize common.js features (theme, etc)
+        if (typeof initializeApp === 'function') {
+            initializeApp();
+        }
+
         // Start status monitoring after initialization
         startStatusMonitoring();
     }
@@ -2006,6 +2084,15 @@
     // Generate modern UI links
     function generateModernLinks() {
         const grid = document.getElementById('modernLinksGrid');
+        if (!grid) {
+            console.error('modernLinksGrid not found!');
+            return;
+        }
+        if (!portalData || !portalData.links) {
+            console.error('portalData or portalData.links not available!', portalData);
+            return;
+        }
+        console.log('Generating modern links:', portalData.links.length, 'links found');
         grid.innerHTML = '';
 
         portalData.links.filter(link => link.enabled).forEach((link, index) => {
@@ -2936,9 +3023,139 @@
 
     // Load portal data on page load
     window.addEventListener('DOMContentLoaded', () => {
+        console.log('Main DOMContentLoaded fired');
+        if (!checkAuthentication()) {
+            // Hide loading screen and show login screen if not authenticated
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+        } else {
+            // Initialize app if already authenticated (loading screen already visible)
+            initializePortalApp();
+        }
+    });
+
+    // ========================================
+    // Authentication System
+    // ========================================
+
+    // Authentication Configuration
+    const AUTH_CONFIG = {
+        // SHA-256 hash of passwords - change these for production!
+        credentials: {
+            'admin': '960ab5b4f73e47d01b0fd342e0ace15f4046d3350c0b834941b26c36f2880f51', // Default:
+            'viewer': '04e77bf8f95cb3e1a36a59d1e93857c6376c68084699ce21c6a3b1cd96e9898c' // Default:
+        },
+        sessionTimeout: 3600000, // 1 hour in milliseconds
+        sessionKey: 'nstarx_auth_session'
+    };
+
+    // Simple SHA-256 hash function
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    }
+
+    // Check if user is already authenticated
+    function checkAuthentication() {
+        const session = localStorage.getItem(AUTH_CONFIG.sessionKey);
+        if (session) {
+            try {
+                const sessionData = JSON.parse(session);
+                const now = Date.now();
+                if (sessionData.expiry && sessionData.expiry > now) {
+                    // Valid session found
+                    return true;
+                } else {
+                    // Session expired
+                    localStorage.removeItem(AUTH_CONFIG.sessionKey);
+                }
+            } catch (e) {
+                localStorage.removeItem(AUTH_CONFIG.sessionKey);
+            }
+        }
+        return false;
+    }
+
+    // Handle login
+    async function handleLogin(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('errorMessage');
+
+        // Hide error message initially
+        errorDiv.style.display = 'none';
+
+        // Hash the password
+        const passwordHash = await sha256(password);
+
+        // Check credentials
+        if (AUTH_CONFIG.credentials[username] && AUTH_CONFIG.credentials[username] === passwordHash) {
+            // Create session
+            const sessionData = {
+                username: username,
+                loginTime: Date.now(),
+                expiry: Date.now() + AUTH_CONFIG.sessionTimeout
+            };
+
+            localStorage.setItem(AUTH_CONFIG.sessionKey, JSON.stringify(sessionData));
+
+            // Hide login screen with fade animation
+            const loginScreen = document.getElementById('loginScreen');
+            loginScreen.style.transition = 'opacity 0.5s';
+            loginScreen.style.opacity = '0';
+
+            setTimeout(() => {
+                loginScreen.style.display = 'none';
+                // Show loading screen
+                document.getElementById('loadingScreen').style.display = 'flex';
+                document.getElementById('loadingScreen').classList.remove('hidden');
+                // Initialize the main application
+                initializePortalApp();
+            }, 500);
+        } else {
+            // Show error message
+            errorDiv.style.display = 'block';
+
+            // Shake animation for form
+            const form = document.getElementById('loginForm');
+            form.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                form.style.animation = '';
+            }, 500);
+        }
+    }
+
+    // Toggle password visibility
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('togglePassword');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.textContent = '👁️';
+        }
+    }
+
+    // Add logout functionality
+    function logout() {
+        localStorage.removeItem(AUTH_CONFIG.sessionKey);
+        location.reload();
+    }
+
+    // Initialize portal app after successful login
+    function initializePortalApp() {
+        console.log('Initializing portal app...');
         loadPortalData();
         // Note: startStatusMonitoring is now called from initializePortal after data loads
-    });
+    }
 </script>
     <!-- Common JavaScript -->
     <script src="assets/js/common.js"></script>
