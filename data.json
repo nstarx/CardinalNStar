@@ -10,6 +10,21 @@
   },
   "links": [
     {
+      "id": "Execution Flow",
+      "title": "Execution Flow",
+      "shortTitle": "Execution Flow",
+      "description": "Execution Flow",
+      "url": "http://kubernetes.go.ro:3020/",
+      "displayUrl": "kubernetes.go.ro:3020/",
+      "badge": "App",
+      "terminalBadge": ["READY"],
+      "icon": "📚",
+      "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
+      "colorClass": "cyan-168",
+      "terminalLegend": "[ APP ]",
+      "enabled": true
+    },
+    {
       "id": "Claude Code Internals",
       "title": "Claude Code Internals",
       "shortTitle": "CC Internals",
