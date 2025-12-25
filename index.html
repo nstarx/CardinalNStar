@@ -3,13 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NStarX Portal</title>
-    <link rel="stylesheet" href="https://unpkg.com/tuicss@2.1.1/dist/tuicss.min.css">
+    <title>NStarX Platform | Cardinal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <style>
-        @font-face {
-            font-family: 'PerfectDOS';
-            src: url('https://unpkg.com/perfect-dos-vga-437@1.0.0/fonts/Perfect%20DOS%20VGA%20437.ttf') format('truetype');
+        :root {
+            --cardinal: #C41E3A;
+            --cardinal-dark: #9A1829;
+            --cardinal-light: #E8364F;
+            --bg-primary: #0D0D0F;
+            --bg-secondary: #16161A;
+            --bg-tertiary: #1E1E24;
+            --bg-card: #1A1A1F;
+            --bg-card-hover: #222228;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A8;
+            --text-muted: #6B6B75;
+            --border-color: #2A2A32;
+            --border-hover: #3A3A44;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
         }
 
         * {
@@ -19,482 +33,840 @@
         }
 
         body {
-            font-family: 'PerfectDOS', 'Courier New', monospace;
-            font-size: 16px;
-            background: #0000aa;
-            color: #ffff54;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(13, 13, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 1000;
         }
 
-        /* Menu Bar */
-        .menu-bar {
-            background: #00aaaa;
-            color: #000;
-            padding: 0;
+        .navbar-brand {
             display: flex;
-            line-height: 1;
+            align-items: center;
+            gap: 12px;
         }
 
-        .menu-item {
-            padding: 0.25em 1em;
-            cursor: pointer;
-        }
-
-        .menu-item:hover, .menu-item.active {
-            background: #000;
-            color: #00aaaa;
-        }
-
-        .menu-item .highlight {
-            color: #aa0000;
-        }
-
-        .menu-item:hover .highlight {
-            color: #ff5555;
-        }
-
-        .menu-spacer {
-            flex: 1;
-        }
-
-        /* Main Area */
-        .main-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 0.5em;
-            position: relative;
-        }
-
-        /* Window */
-        .window {
-            background: #0000aa;
-            border: 2px solid #00aaaa;
-            position: relative;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .window::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            right: -4px;
-            bottom: -4px;
-            background: #000;
-            z-index: -1;
-        }
-
-        .window-title {
-            position: absolute;
-            top: -0.6em;
-            left: 1em;
-            background: #0000aa;
-            padding: 0 0.5em;
-            color: #00aaaa;
-        }
-
-        .window-title .num {
-            color: #aaaaaa;
-        }
-
-        .window-controls {
-            position: absolute;
-            top: -0.6em;
-            right: 1em;
-            background: #0000aa;
-            padding: 0 0.25em;
-            display: flex;
-            gap: 0.5em;
-        }
-
-        .window-controls span {
-            color: #00aaaa;
-            cursor: pointer;
-        }
-
-        .window-controls span:hover {
-            color: #55ffff;
-        }
-
-        /* Content */
-        .content {
-            flex: 1;
-            padding: 1em;
-            overflow-y: auto;
-        }
-
-        /* Resource List */
-        .resource-list {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .resource-item {
-            display: flex;
-            padding: 0.125em 0.5em;
-            text-decoration: none;
-            color: #ffff54;
-            cursor: pointer;
-        }
-
-        .resource-item:hover, .resource-item.selected {
-            background: #00aaaa;
-            color: #000;
-        }
-
-        .resource-item:hover .item-badge {
-            color: #000;
-        }
-
-        .item-num {
-            width: 2em;
-            color: #aaaaaa;
-        }
-
-        .resource-item:hover .item-num {
-            color: #000;
-        }
-
-        .item-icon {
-            width: 2.5em;
+        .brand-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--cardinal), var(--cardinal-dark));
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
         }
 
-        .material-symbols-outlined {
-            font-size: 1.2em;
-            vertical-align: middle;
+        .brand-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
-        .item-title {
-            flex: 1;
+        .brand-text span {
+            color: var(--cardinal);
         }
 
-        .item-badge {
-            color: #55ff55;
-            margin-left: 1em;
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Scroll indicators */
-        .scroll-bar {
-            position: absolute;
-            right: 0;
-            top: 1.5em;
-            bottom: 0;
-            width: 1em;
-            background: #00aaaa;
+        .nav-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .nav-btn.primary {
+            background: var(--cardinal);
+            border-color: var(--cardinal);
+            color: white;
+        }
+
+        .nav-btn.primary:hover {
+            background: var(--cardinal-light);
+            border-color: var(--cardinal-light);
+        }
+
+        .nav-btn .material-symbols-outlined {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 96px 32px 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 32px 0;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(196, 30, 58, 0.1);
+            border: 1px solid rgba(196, 30, 58, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--cardinal-light);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--cardinal);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Resources Grid */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
-        }
-
-        .scroll-arrow {
-            text-align: center;
-            color: #000;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-        .scroll-track {
-            flex: 1;
-            background: #008888;
             position: relative;
+            overflow: hidden;
         }
 
-        .scroll-thumb {
+        .resource-card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2em;
-            background: #00aaaa;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cardinal), var(--cardinal-light));
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
 
-        /* Status Bar */
-        .status-bar {
-            background: #00aaaa;
-            color: #000;
-            padding: 0.25em 1em;
+        .resource-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .resource-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
             display: flex;
+            align-items: flex-start;
             justify-content: space-between;
-            line-height: 1;
+            margin-bottom: 16px;
         }
 
-        .status-bar .highlight {
-            color: #aa0000;
-        }
-
-        /* Help Line */
-        .help-line {
-            background: #000;
-            color: #00aaaa;
-            padding: 0.25em 0;
-            display: flex;
-            justify-content: center;
-            gap: 2em;
-            font-size: 0.9em;
-            line-height: 1;
-        }
-
-        .help-item .key {
-            color: #aaaaaa;
-        }
-
-        /* Dialog overlay */
-        .dialog-overlay {
-            position: fixed;
-            inset: 0;
-            background: transparent;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .dialog-overlay.active {
-            display: flex;
-        }
-
-        /* TuiCss overrides for dialogs */
-        .tui-window.dialog-box {
-            min-width: 45em;
-            max-width: 90vw;
-        }
-
-        .tui-window.dialog-box fieldset {
-            background: #aaaaaa;
-            margin: 0;
-        }
-
-        .dialog-body {
-            padding: 1em;
-        }
-
-        .dialog-footer {
-            padding: 0.5em 1em 1em;
-            display: flex;
-            justify-content: center;
-            gap: 1em;
-        }
-
-        .form-row {
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--cardinal), var(--cardinal-dark));
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            margin-bottom: 0.5em;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .form-row label {
-            width: 10em;
-            text-align: right;
-            padding-right: 1em;
+        .card-icon .material-symbols-outlined {
+            font-size: 24px;
+            color: white;
         }
 
-        .form-row input,
-        .form-row select {
+        .card-badge {
+            padding: 4px 10px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .card-badge.app { background: rgba(59, 130, 246, 0.15); color: #60A5FA; }
+        .card-badge.docs { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+        .card-badge.demo { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+        .card-badge.api { background: rgba(139, 92, 246, 0.15); color: #A78BFA; }
+        .card-badge.compliance { background: rgba(236, 72, 153, 0.15); color: #F472B6; }
+        .card-badge.ai { background: rgba(196, 30, 58, 0.15); color: var(--cardinal-light); }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
             flex: 1;
         }
 
-        .tui-fieldset legend {
-            background: #00aaaa;
-            color: #000;
-            padding: 0.1em 0.5em;
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
         }
 
-        @media (max-width: 600px) {
-            body {
-                font-size: 12px;
+        .card-url {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-url .material-symbols-outlined {
+            font-size: 14px;
+        }
+
+        .card-number {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Keyboard Hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            padding: 12px 20px;
+            background: rgba(22, 22, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .hint-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hint-key {
+            padding: 4px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        /* Modal/Dialog Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--cardinal);
+            box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        select.form-input {
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--cardinal);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--cardinal-light);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        /* Help Modal Content */
+        .help-shortcuts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+        }
+
+        .help-key {
+            min-width: 48px;
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        .help-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Export Textarea */
+        .export-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-primary);
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            resize: none;
+        }
+
+        /* Local indicator */
+        .local-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            background: rgba(245, 158, 11, 0.15);
+            border-radius: 4px;
+            font-size: 10px;
+            color: #FBBF24;
+            margin-left: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 16px;
             }
 
-            .menu-item {
-                padding: 0.25em 0.5em;
+            .main-content {
+                padding: 80px 16px 100px;
             }
 
-            .help-line {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .stats-bar {
                 flex-wrap: wrap;
-                gap: 0.5em 1em;
+                gap: 24px;
             }
 
-            .tui-window.dialog-box {
-                min-width: 95vw;
-                max-width: 95vw;
+            .resources-grid {
+                grid-template-columns: 1fr;
             }
 
-            .form-row {
-                flex-direction: column;
-                align-items: stretch;
+            .keyboard-hint {
+                display: none;
             }
 
-            .form-row label {
-                width: auto;
-                text-align: left;
-                padding: 0 0 0.25em 0;
+            .help-shortcuts {
+                grid-template-columns: 1fr;
             }
+        }
+
+        /* Selection highlight */
+        .resource-card.selected {
+            border-color: var(--cardinal);
+            background: var(--bg-card-hover);
+        }
+
+        .resource-card.selected::before {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <!-- Menu Bar -->
-    <div class="menu-bar">
-        <div class="menu-item" onclick="showAddDialog()"><span class="highlight">A</span>dd</div>
-        <div class="menu-item" onclick="showExportDialog()">E<span class="highlight">x</span>port</div>
-        <div class="menu-item" onclick="clearLocalData()"><span class="highlight">C</span>lear Local</div>
-        <div class="menu-spacer"></div>
-        <div class="menu-item" onclick="showHelp()"><span class="highlight">H</span>elp</div>
-        <div class="menu-item" onclick="window.location.href='index_old.html'"><span class="highlight">O</span>ld Site</div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <div class="brand-logo">N</div>
+            <div class="brand-text">NStarX <span>Cardinal</span></div>
+        </div>
+        <div class="navbar-nav">
+            <button class="nav-btn" onclick="showAddDialog()">
+                <span class="material-symbols-outlined">add</span>
+                Add
+            </button>
+            <button class="nav-btn" onclick="showExportDialog()">
+                <span class="material-symbols-outlined">download</span>
+                Export
+            </button>
+            <button class="nav-btn" onclick="clearLocalData()">
+                <span class="material-symbols-outlined">delete</span>
+                Clear
+            </button>
+            <button class="nav-btn primary" onclick="showHelp()">
+                <span class="material-symbols-outlined">help</span>
+                Help
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">Platform Active</div>
+            <h1>NStarX Platform Cardinal</h1>
+            <p>Quick access to all NStarX resources, documentation, and demo environments</p>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-resources">0</div>
+                    <div class="stat-label">Resources</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="app-count">0</div>
+                    <div class="stat-label">Applications</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="doc-count">0</div>
+                    <div class="stat-label">Documentation</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">v<span id="version">1.0</span></div>
+                    <div class="stat-label">Version</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Platform Resources</h2>
+                    <p class="section-subtitle">Press 1-9 to quick access resources</p>
+                </div>
+            </div>
+
+            <div class="resources-grid" id="links-grid">
+                <!-- Resources will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Keyboard Hints -->
+    <div class="keyboard-hint">
+        <div class="hint-item">
+            <span class="hint-key">1-9</span>
+            <span>Open resource</span>
+        </div>
+        <div class="hint-item">
+            <span class="hint-key">&uarr;&darr;</span>
+            <span>Navigate</span>
+        </div>
+        <div class="hint-item">
+            <span class="hint-key">Enter</span>
+            <span>Open selected</span>
+        </div>
+        <div class="hint-item">
+            <span class="hint-key">F1</span>
+            <span>Help</span>
+        </div>
     </div>
 
-    <!-- Main Area -->
-    <div class="main-area">
-        <div class="window">
-            <span class="window-title"><span class="num">[1]</span> NSTARX.PAS</span>
-            <div class="window-controls">
-                <span>[↑]</span>
-                <span>[■]</span>
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="help-dialog">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Keyboard Shortcuts</h3>
+                <button class="modal-close" onclick="closeDialog('help-dialog')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
-
-            <div class="content">
-                <div class="resource-list" id="links-grid">
-                    <div class="resource-item">Loading resources...</div>
+            <div class="modal-body">
+                <div class="help-shortcuts">
+                    <div class="help-item">
+                        <span class="help-key">1-9</span>
+                        <span class="help-desc">Open resource directly</span>
+                    </div>
+                    <div class="help-item">
+                        <span class="help-key">&uarr; &darr;</span>
+                        <span class="help-desc">Navigate list</span>
+                    </div>
+                    <div class="help-item">
+                        <span class="help-key">Enter</span>
+                        <span class="help-desc">Open selected item</span>
+                    </div>
+                    <div class="help-item">
+                        <span class="help-key">F1</span>
+                        <span class="help-desc">Show this help</span>
+                    </div>
+                    <div class="help-item">
+                        <span class="help-key">F2</span>
+                        <span class="help-desc">Add new resource</span>
+                    </div>
+                    <div class="help-item">
+                        <span class="help-key">F5</span>
+                        <span class="help-desc">Refresh page</span>
+                    </div>
+                    <div class="help-item">
+                        <span class="help-key">Esc</span>
+                        <span class="help-desc">Close dialog</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="scroll-bar">
-                <div class="scroll-arrow">▲</div>
-                <div class="scroll-track">
-                    <div class="scroll-thumb"></div>
-                </div>
-                <div class="scroll-arrow">▼</div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeDialog('help-dialog')">Got it</button>
             </div>
         </div>
     </div>
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <span><span class="highlight">■</span> Ready</span>
-        <span id="item-count">0 resources</span>
-        <span>v<span id="version">1.0</span></span>
-    </div>
-
-    <!-- Help Line -->
-    <div class="help-line">
-        <span class="help-item"><span class="key">F1</span> Help</span>
-        <span class="help-item"><span class="key">F2</span> Add</span>
-        <span class="help-item"><span class="key">F5</span> Refresh</span>
-        <span class="help-item"><span class="key">1-9</span> Open</span>
-        <span class="help-item"><span class="key">↑↓</span> Navigate</span>
-        <span class="help-item"><span class="key">Esc</span> Close</span>
-    </div>
-
-    <!-- Help Dialog -->
-    <div class="dialog-overlay" id="help-dialog">
-        <div class="tui-window dialog-box tui-shadow">
-            <fieldset class="tui-fieldset">
-                <legend class="center">Help</legend>
-                <div class="dialog-body">
-                    <pre style="margin: 0;">
- ╔═══════════════════════════════════════╗
- ║  NSTARX PORTAL v1.0                   ║
- ║  Quick access to all resources        ║
- ╠═══════════════════════════════════════╣
- ║  KEYBOARD SHORTCUTS:                  ║
- ║                                       ║
- ║  1-9 ......... Open resource directly ║
- ║  ↑/↓ ......... Navigate list          ║
- ║  Enter ....... Open selected item     ║
- ║  F1 .......... Show this help         ║
- ║  F2 .......... Add new resource       ║
- ║  F5 .......... Refresh page           ║
- ║  Esc ......... Close dialog           ║
- ╚═══════════════════════════════════════╝
-                    </pre>
+    <!-- Add Resource Modal -->
+    <div class="modal-overlay" id="add-dialog">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Resource</h3>
+                <button class="modal-close" onclick="closeDialog('add-dialog')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" id="add-title" class="form-input" placeholder="My Resource">
                 </div>
-                <div class="dialog-footer">
-                    <button class="tui-button" onclick="closeDialog('help-dialog')">OK</button>
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input type="text" id="add-url" class="form-input" placeholder="https://example.com">
                 </div>
-            </fieldset>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" id="add-desc" class="form-input" placeholder="Brief description">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select id="add-badge" class="form-input">
+                        <option value="App">Application</option>
+                        <option value="Documentation">Documentation</option>
+                        <option value="Live Demo">Live Demo</option>
+                        <option value="UI Demo">UI Demo</option>
+                        <option value="API Reference">API Reference</option>
+                        <option value="Compliance">Compliance</option>
+                        <option value="AI Agents">AI Agents</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Icon</label>
+                    <select id="add-icon" class="form-input">
+                        <option value="description">Description/Docs</option>
+                        <option value="dns">Server</option>
+                        <option value="cloud">Cloud</option>
+                        <option value="api">API</option>
+                        <option value="lock">Security</option>
+                        <option value="smart_toy">AI/Robot</option>
+                        <option value="rocket_launch">Launch</option>
+                        <option value="settings">Settings</option>
+                        <option value="dashboard">Dashboard</option>
+                        <option value="link">Link</option>
+                        <option value="folder">Folder</option>
+                        <option value="code">Code</option>
+                        <option value="terminal">Terminal</option>
+                        <option value="storage">Database</option>
+                    </select>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted);">
+                    Resources are saved to localStorage. Use Export to save permanently.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDialog('add-dialog')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveNewResource()">Add Resource</button>
+            </div>
         </div>
     </div>
 
-    <!-- Add Dialog -->
-    <div class="dialog-overlay" id="add-dialog">
-        <div class="tui-window dialog-box tui-shadow">
-            <fieldset class="tui-fieldset">
-                <legend class="center">Add New Resource</legend>
-                <div class="dialog-body">
-                    <div class="form-row">
-                        <label for="add-title">Title:</label>
-                        <input type="text" id="add-title" class="tui-input" placeholder="My Resource">
-                    </div>
-                    <div class="form-row">
-                        <label for="add-url">URL:</label>
-                        <input type="text" id="add-url" class="tui-input" placeholder="https://example.com">
-                    </div>
-                    <div class="form-row">
-                        <label for="add-desc">Description:</label>
-                        <input type="text" id="add-desc" class="tui-input" placeholder="Brief description">
-                    </div>
-                    <div class="form-row">
-                        <label for="add-badge">Badge:</label>
-                        <select id="add-badge" class="tui-input">
-                            <option value="App">App</option>
-                            <option value="Documentation">Documentation</option>
-                            <option value="Live Demo">Live Demo</option>
-                            <option value="UI Demo">UI Demo</option>
-                            <option value="API Reference">API Reference</option>
-                            <option value="Compliance">Compliance</option>
-                            <option value="AI Agents">AI Agents</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <label for="add-icon">Icon:</label>
-                        <select id="add-icon" class="tui-input">
-                            <option value="description">Description/Docs</option>
-                            <option value="dns">Server</option>
-                            <option value="cloud">Cloud</option>
-                            <option value="api">API</option>
-                            <option value="lock">Security</option>
-                            <option value="smart_toy">AI/Robot</option>
-                            <option value="rocket_launch">Launch</option>
-                            <option value="settings">Settings</option>
-                            <option value="dashboard">Dashboard</option>
-                            <option value="link">Link</option>
-                            <option value="folder">Folder</option>
-                            <option value="code">Code</option>
-                            <option value="terminal">Terminal</option>
-                            <option value="storage">Database</option>
-                        </select>
-                    </div>
-                    <p style="margin-top: 1em; font-size: 0.9em;">
-                        * Saved to localStorage. Use Export to save permanently.
-                    </p>
-                </div>
-                <div class="dialog-footer">
-                    <button class="tui-button" onclick="saveNewResource()">Save</button>
-                    <button class="tui-button" onclick="closeDialog('add-dialog')">Cancel</button>
-                </div>
-            </fieldset>
-        </div>
-    </div>
-
-    <!-- Export Dialog -->
-    <div class="dialog-overlay" id="export-dialog">
-        <div class="tui-window dialog-box tui-shadow" style="min-width: 55em;">
-            <fieldset class="tui-fieldset">
-                <legend class="center">Export Local Resources</legend>
-                <div class="dialog-body">
-                    <p style="margin-bottom: 0.5em;">Copy this JSON and add to data.json "links" array:</p>
-                    <textarea id="export-json" class="tui-input" style="width: 100%; height: 12em; font-family: monospace;" readonly></textarea>
-                </div>
-                <div class="dialog-footer">
-                    <button class="tui-button" onclick="copyExport()">Copy</button>
-                    <button class="tui-button" onclick="closeDialog('export-dialog')">Close</button>
-                </div>
-            </fieldset>
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="export-dialog">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Export Local Resources</h3>
+                <button class="modal-close" onclick="closeDialog('export-dialog')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">
+                    Copy this JSON and add to data.json "links" array:
+                </p>
+                <textarea id="export-json" class="export-textarea" readonly></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeDialog('export-dialog')">Close</button>
+                <button class="btn btn-primary" onclick="copyExport()">Copy to Clipboard</button>
+            </div>
         </div>
     </div>
 
@@ -505,38 +877,7 @@
         let mouseEnabled = false;
         const LOCAL_STORAGE_KEY = 'nstarx_local_resources';
 
-        async function loadPortal() {
-            try {
-                const response = await fetch('data.json');
-                const data = await response.json();
-
-                document.getElementById('version').textContent = data.portal.version;
-                document.title = 'NSTARX.PAS - ' + data.portal.title;
-
-                // Load from data.json
-                const jsonItems = data.links.filter(link => link.enabled);
-
-                // Load from localStorage
-                localItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
-
-                // Merge: local items first, then json items
-                items = [...localItems, ...jsonItems];
-                document.getElementById('item-count').textContent = items.length + ' resources';
-
-                renderList();
-
-                // Enable mouse selection after initial render
-                setTimeout(() => { mouseEnabled = true; }, 100);
-            } catch (error) {
-                document.getElementById('links-grid').innerHTML = `
-                    <div class="resource-item" style="color: #ff5555;">
-                        Error loading data. Press F5 to retry.
-                    </div>
-                `;
-            }
-        }
-
-        // Map emojis to Material Icons
+        // Icon mapping from emoji to material icons
         const iconMap = {
             '📚': 'description',
             '🖥️': 'dns',
@@ -551,13 +892,58 @@
         };
 
         function getIcon(icon) {
-            // If it's already a material icon name, use it
             if (icon && !icon.match(/[\u{1F300}-\u{1F9FF}]/u)) {
-                return `<span class="material-symbols-outlined">${icon}</span>`;
+                return icon;
             }
-            // Map emoji to material icon
-            const mapped = iconMap[icon] || 'link';
-            return `<span class="material-symbols-outlined">${mapped}</span>`;
+            return iconMap[icon] || 'link';
+        }
+
+        function getBadgeClass(badge) {
+            const lower = badge.toLowerCase();
+            if (lower.includes('app')) return 'app';
+            if (lower.includes('doc')) return 'docs';
+            if (lower.includes('demo')) return 'demo';
+            if (lower.includes('api')) return 'api';
+            if (lower.includes('compliance')) return 'compliance';
+            if (lower.includes('ai') || lower.includes('agent')) return 'ai';
+            return '';
+        }
+
+        async function loadPortal() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+
+                document.getElementById('version').textContent = data.portal.version;
+                document.title = 'NStarX Platform | Cardinal';
+
+                // Load from data.json
+                const jsonItems = data.links.filter(link => link.enabled);
+
+                // Load from localStorage
+                localItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+
+                // Merge: local items first, then json items
+                items = [...localItems, ...jsonItems];
+
+                // Update stats
+                document.getElementById('total-resources').textContent = items.length;
+                document.getElementById('app-count').textContent = items.filter(i =>
+                    i.badge.toLowerCase().includes('app') || i.badge.toLowerCase().includes('demo')
+                ).length;
+                document.getElementById('doc-count').textContent = items.filter(i =>
+                    i.badge.toLowerCase().includes('doc') || i.badge.toLowerCase().includes('api')
+                ).length;
+
+                renderList();
+                setTimeout(() => { mouseEnabled = true; }, 100);
+            } catch (error) {
+                document.getElementById('links-grid').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        Error loading data. Press F5 to retry.
+                    </div>
+                `;
+            }
         }
 
         function renderList() {
@@ -565,23 +951,41 @@
 
             grid.innerHTML = items.map((link, i) => {
                 const num = i + 1;
-                const isLocal = link.isLocal ? ' *' : '';
+                const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
+
                 return `
-                    <a href="${link.url}" class="resource-item ${i === selectedIndex ? 'selected' : ''}" target="_blank" data-index="${i}">
-                        <span class="item-num">${num <= 9 ? num + ')' : '  '}</span>
-                        <span class="item-icon">${getIcon(link.icon)}</span>
-                        <span class="item-title">${link.title}${isLocal}</span>
-                        <span class="item-badge">[${link.badge}]</span>
+                    <a href="${link.url}"
+                       class="resource-card ${i === selectedIndex ? 'selected' : ''}"
+                       target="_blank"
+                       data-index="${i}">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <span class="material-symbols-outlined">${getIcon(link.icon)}</span>
+                            </div>
+                            <span class="card-badge ${getBadgeClass(link.badge)}">${link.badge}</span>
+                        </div>
+                        <h3 class="card-title">${link.title}${localBadge}</h3>
+                        <p class="card-description">${link.description}</p>
+                        <div class="card-footer">
+                            <span class="card-url">
+                                <span class="material-symbols-outlined">link</span>
+                                ${link.displayUrl || link.url.replace(/^https?:\/\//, '').split('/')[0]}
+                            </span>
+                            ${num <= 9 ? `<span class="card-number">${num}</span>` : ''}
+                        </div>
                     </a>
                 `;
             }).join('');
         }
 
         function updateSelection() {
-            document.querySelectorAll('.resource-item').forEach((el, i) => {
+            document.querySelectorAll('.resource-card').forEach((el, i) => {
                 el.classList.toggle('selected', i === selectedIndex);
             });
-            document.querySelectorAll('.resource-item')[selectedIndex]?.scrollIntoView({ block: 'nearest' });
+            document.querySelectorAll('.resource-card')[selectedIndex]?.scrollIntoView({
+                block: 'nearest',
+                behavior: 'smooth'
+            });
         }
 
         // Dialog functions
@@ -594,11 +998,11 @@
         }
 
         function closeAllDialogs() {
-            document.querySelectorAll('.dialog-overlay').forEach(d => d.classList.remove('active'));
+            document.querySelectorAll('.modal-overlay').forEach(d => d.classList.remove('active'));
         }
 
         function isDialogOpen() {
-            return document.querySelector('.dialog-overlay.active') !== null;
+            return document.querySelector('.modal-overlay.active') !== null;
         }
 
         function showHelp() {
@@ -606,7 +1010,6 @@
         }
 
         function showAddDialog() {
-            // Clear form
             document.getElementById('add-title').value = '';
             document.getElementById('add-url').value = '';
             document.getElementById('add-desc').value = '';
@@ -644,9 +1047,8 @@
             localItems.push(newItem);
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localItems));
 
-            // Refresh list
             items = [...localItems, ...items.filter(i => !i.isLocal)];
-            document.getElementById('item-count').textContent = items.length + ' resources';
+            document.getElementById('total-resources').textContent = items.length;
             renderList();
 
             closeDialog('add-dialog');
@@ -674,18 +1076,17 @@
                 alert('No local resources to clear.');
                 return;
             }
-            if (confirm('Clear all locally added resources? (' + localItems.length + ' items)')) {
+            if (confirm(`Clear all ${localItems.length} locally added resources?`)) {
                 localStorage.removeItem(LOCAL_STORAGE_KEY);
                 localItems = [];
                 items = items.filter(i => !i.isLocal);
-                document.getElementById('item-count').textContent = items.length + ' resources';
+                document.getElementById('total-resources').textContent = items.length;
                 renderList();
             }
         }
 
-        // Keyboard
+        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            // If any dialog is open
             if (isDialogOpen()) {
                 if (e.key === 'Escape') {
                     e.preventDefault();
@@ -738,14 +1139,23 @@
             }
         });
 
-        // Mouse hover selection (only after initial render)
+        // Mouse hover selection
         document.getElementById('links-grid').addEventListener('mouseover', (e) => {
             if (!mouseEnabled) return;
-            const item = e.target.closest('.resource-item');
+            const item = e.target.closest('.resource-card');
             if (item && item.dataset.index !== undefined) {
                 selectedIndex = parseInt(item.dataset.index);
                 updateSelection();
             }
+        });
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
         });
 
         loadPortal();
