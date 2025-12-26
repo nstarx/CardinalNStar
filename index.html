@@ -645,150 +645,6 @@
         .resource-card.selected::before {
             opacity: 1;
         }
-
-        /* Category Folder Styles */
-        .category-section {
-            margin-bottom: 24px;
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 16px;
-        }
-
-        .category-header:hover {
-            background: var(--bg-tertiary);
-            border-color: var(--border-hover);
-        }
-
-        .category-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .category-icon .material-symbols-outlined {
-            font-size: 22px;
-            color: white;
-        }
-
-        .category-icon.app { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
-        .category-icon.docs { background: linear-gradient(135deg, #10B981, #059669); }
-        .category-icon.demo { background: linear-gradient(135deg, #F59E0B, #D97706); }
-        .category-icon.api { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
-        .category-icon.compliance { background: linear-gradient(135deg, #EC4899, #BE185D); }
-        .category-icon.ai { background: linear-gradient(135deg, var(--cardinal), var(--cardinal-dark)); }
-
-        .category-info {
-            flex: 1;
-        }
-
-        .category-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .category-description {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .category-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .category-count {
-            padding: 4px 10px;
-            background: var(--bg-tertiary);
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .category-toggle {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .category-toggle .material-symbols-outlined {
-            font-size: 20px;
-            color: var(--text-muted);
-            transition: transform 0.2s ease;
-        }
-
-        .category-header.collapsed .category-toggle .material-symbols-outlined {
-            transform: rotate(-90deg);
-        }
-
-        .category-content {
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .category-content.collapsed {
-            max-height: 0 !important;
-        }
-
-        /* View Toggle Button */
-        .view-toggle {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .view-btn {
-            padding: 6px 12px;
-            border: none;
-            background: transparent;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .view-btn:hover {
-            color: var(--text-secondary);
-        }
-
-        .view-btn.active {
-            background: var(--cardinal);
-            color: white;
-        }
-
-        .view-btn .material-symbols-outlined {
-            font-size: 16px;
-        }
     </style>
 </head>
 <body>
@@ -799,16 +655,6 @@
             <div class="brand-text">NStarX <span>Cardinal</span></div>
         </div>
         <div class="navbar-nav">
-            <div class="view-toggle">
-                <button class="view-btn active" id="view-grouped" onclick="setViewMode('grouped')">
-                    <span class="material-symbols-outlined">folder</span>
-                    Grouped
-                </button>
-                <button class="view-btn" id="view-flat" onclick="setViewMode('flat')">
-                    <span class="material-symbols-outlined">view_list</span>
-                    Flat
-                </button>
-            </div>
             <button class="nav-btn" onclick="showAddDialog()">
                 <span class="material-symbols-outlined">add</span>
                 Add
@@ -961,7 +807,7 @@
                     <input type="text" id="add-desc" class="form-input" placeholder="Brief description">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Badge</label>
+                    <label class="form-label">Category</label>
                     <select id="add-badge" class="form-input">
                         <option value="App">Application</option>
                         <option value="Documentation">Documentation</option>
@@ -970,17 +816,6 @@
                         <option value="API Reference">API Reference</option>
                         <option value="Compliance">Compliance</option>
                         <option value="AI Agents">AI Agents</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Folder</label>
-                    <select id="add-category" class="form-input">
-                        <option value="applications">Applications</option>
-                        <option value="documentation">Documentation</option>
-                        <option value="demos">Demos</option>
-                        <option value="api-infrastructure">API & Infrastructure</option>
-                        <option value="compliance">Compliance</option>
-                        <option value="ai-agents">AI & Agents</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1038,14 +873,9 @@
     <script>
         let items = [];
         let localItems = [];
-        let categories = [];
-        let categoryStates = {};
         let selectedIndex = 0;
         let mouseEnabled = false;
-        let viewMode = 'grouped'; // 'grouped' or 'flat'
         const LOCAL_STORAGE_KEY = 'nstarx_local_resources';
-        const VIEW_MODE_KEY = 'nstarx_view_mode';
-        const CATEGORY_STATES_KEY = 'nstarx_category_states';
 
         // Icon mapping from emoji to material icons
         const iconMap = {
@@ -1087,9 +917,6 @@
                 document.getElementById('version').textContent = data.portal.version;
                 document.title = 'NStarX Platform | Cardinal';
 
-                // Load categories
-                categories = data.categories || [];
-
                 // Load from data.json
                 const jsonItems = data.links.filter(link => link.enabled);
 
@@ -1098,20 +925,6 @@
 
                 // Merge: local items first, then json items
                 items = [...localItems, ...jsonItems];
-
-                // Load saved preferences
-                viewMode = localStorage.getItem(VIEW_MODE_KEY) || 'grouped';
-                categoryStates = JSON.parse(localStorage.getItem(CATEGORY_STATES_KEY) || '{}');
-
-                // Initialize category states from data if not saved
-                categories.forEach(cat => {
-                    if (categoryStates[cat.id] === undefined) {
-                        categoryStates[cat.id] = cat.expanded !== false;
-                    }
-                });
-
-                // Update view toggle UI
-                updateViewToggleUI();
 
                 // Update stats
                 document.getElementById('total-resources').textContent = items.length;
@@ -1133,168 +946,36 @@
             }
         }
 
-        function updateViewToggleUI() {
-            document.getElementById('view-grouped').classList.toggle('active', viewMode === 'grouped');
-            document.getElementById('view-flat').classList.toggle('active', viewMode === 'flat');
-        }
-
-        function setViewMode(mode) {
-            viewMode = mode;
-            localStorage.setItem(VIEW_MODE_KEY, mode);
-            updateViewToggleUI();
-            renderList();
-        }
-
-        function toggleCategory(categoryId) {
-            categoryStates[categoryId] = !categoryStates[categoryId];
-            localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
-
-            const header = document.querySelector(`[data-category="${categoryId}"]`);
-            const content = document.getElementById(`category-content-${categoryId}`);
-
-            if (header && content) {
-                header.classList.toggle('collapsed', !categoryStates[categoryId]);
-                content.classList.toggle('collapsed', !categoryStates[categoryId]);
-            }
-        }
-
         function renderList() {
             const grid = document.getElementById('links-grid');
 
-            if (viewMode === 'flat') {
-                renderFlatList(grid);
-            } else {
-                renderGroupedList(grid);
-            }
-        }
+            grid.innerHTML = items.map((link, i) => {
+                const num = i + 1;
+                const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
 
-        function renderFlatList(grid) {
-            grid.innerHTML = items.map((link, i) => renderCard(link, i)).join('');
-        }
-
-        function renderGroupedList(grid) {
-            let html = '';
-            let globalIndex = 0;
-
-            // Group items by category
-            const groupedItems = {};
-            const uncategorized = [];
-
-            items.forEach((item, originalIndex) => {
-                item._originalIndex = originalIndex;
-                if (item.category) {
-                    if (!groupedItems[item.category]) {
-                        groupedItems[item.category] = [];
-                    }
-                    groupedItems[item.category].push(item);
-                } else {
-                    uncategorized.push(item);
-                }
-            });
-
-            // Render each category
-            categories.forEach(category => {
-                const categoryItems = groupedItems[category.id] || [];
-                if (categoryItems.length === 0) return;
-
-                const isExpanded = categoryStates[category.id] !== false;
-
-                html += `
-                    <div class="category-section">
-                        <div class="category-header ${isExpanded ? '' : 'collapsed'}"
-                             data-category="${category.id}"
-                             onclick="toggleCategory('${category.id}')">
-                            <div class="category-icon ${category.colorClass}">
-                                <span class="material-symbols-outlined">${category.icon}</span>
+                return `
+                    <a href="${link.url}"
+                       class="resource-card ${i === selectedIndex ? 'selected' : ''}"
+                       target="_blank"
+                       data-index="${i}">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <span class="material-symbols-outlined">${getIcon(link.icon)}</span>
                             </div>
-                            <div class="category-info">
-                                <div class="category-name">${category.name}</div>
-                                <div class="category-description">${category.description}</div>
-                            </div>
-                            <div class="category-meta">
-                                <span class="category-count">${categoryItems.length}</span>
-                                <div class="category-toggle">
-                                    <span class="material-symbols-outlined">expand_more</span>
-                                </div>
-                            </div>
+                            <span class="card-badge ${getBadgeClass(link.badge)}">${link.badge}</span>
                         </div>
-                        <div class="category-content ${isExpanded ? '' : 'collapsed'}"
-                             id="category-content-${category.id}">
-                            <div class="resources-grid">
-                                ${categoryItems.map(item => {
-                                    const cardHtml = renderCard(item, globalIndex);
-                                    globalIndex++;
-                                    return cardHtml;
-                                }).join('')}
-                            </div>
+                        <h3 class="card-title">${link.title}${localBadge}</h3>
+                        <p class="card-description">${link.description}</p>
+                        <div class="card-footer">
+                            <span class="card-url">
+                                <span class="material-symbols-outlined">link</span>
+                                ${link.displayUrl || link.url.replace(/^https?:\/\//, '').split('/')[0]}
+                            </span>
+                            ${num <= 9 ? `<span class="card-number">${num}</span>` : ''}
                         </div>
-                    </div>
+                    </a>
                 `;
-            });
-
-            // Render uncategorized items
-            if (uncategorized.length > 0) {
-                html += `
-                    <div class="category-section">
-                        <div class="category-header"
-                             data-category="uncategorized"
-                             onclick="toggleCategory('uncategorized')">
-                            <div class="category-icon" style="background: linear-gradient(135deg, #6B7280, #4B5563);">
-                                <span class="material-symbols-outlined">folder_open</span>
-                            </div>
-                            <div class="category-info">
-                                <div class="category-name">Other</div>
-                                <div class="category-description">Uncategorized resources</div>
-                            </div>
-                            <div class="category-meta">
-                                <span class="category-count">${uncategorized.length}</span>
-                                <div class="category-toggle">
-                                    <span class="material-symbols-outlined">expand_more</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="category-content" id="category-content-uncategorized">
-                            <div class="resources-grid">
-                                ${uncategorized.map(item => {
-                                    const cardHtml = renderCard(item, globalIndex);
-                                    globalIndex++;
-                                    return cardHtml;
-                                }).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            grid.innerHTML = html;
-        }
-
-        function renderCard(link, index) {
-            const num = index + 1;
-            const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
-
-            return `
-                <a href="${link.url}"
-                   class="resource-card ${index === selectedIndex ? 'selected' : ''}"
-                   target="_blank"
-                   data-index="${index}">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <span class="material-symbols-outlined">${getIcon(link.icon)}</span>
-                        </div>
-                        <span class="card-badge ${getBadgeClass(link.badge)}">${link.badge}</span>
-                    </div>
-                    <h3 class="card-title">${link.title}${localBadge}</h3>
-                    <p class="card-description">${link.description}</p>
-                    <div class="card-footer">
-                        <span class="card-url">
-                            <span class="material-symbols-outlined">link</span>
-                            ${link.displayUrl || link.url.replace(/^https?:\/\//, '').split('/')[0]}
-                        </span>
-                        ${num <= 9 ? `<span class="card-number">${num}</span>` : ''}
-                    </div>
-                </a>
-            `;
+            }).join('');
         }
 
         function updateSelection() {
@@ -1333,7 +1014,6 @@
             document.getElementById('add-url').value = '';
             document.getElementById('add-desc').value = '';
             document.getElementById('add-badge').value = 'App';
-            document.getElementById('add-category').value = 'applications';
             document.getElementById('add-icon').value = 'description';
             showDialog('add-dialog');
             setTimeout(() => document.getElementById('add-title').focus(), 100);
@@ -1344,7 +1024,6 @@
             const url = document.getElementById('add-url').value.trim();
             const desc = document.getElementById('add-desc').value.trim();
             const badge = document.getElementById('add-badge').value;
-            const category = document.getElementById('add-category').value;
             const icon = document.getElementById('add-icon').value;
 
             if (!title || !url) {
@@ -1360,7 +1039,6 @@
                 url: url,
                 displayUrl: url.replace(/^https?:\/\//, '').split('/')[0],
                 badge: badge,
-                category: category,
                 icon: icon,
                 enabled: true,
                 isLocal: true
