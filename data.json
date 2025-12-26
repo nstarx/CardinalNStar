@@ -8,6 +8,82 @@
     "terminalStatus": "System Ready. Select a destination below.",
     "version": "1.0"
   },
+  "categories": [
+    {
+      "id": "applications",
+      "name": "Applications",
+      "icon": "apps",
+      "description": "NStarX platform applications and tools",
+      "colorClass": "app",
+      "expanded": true,
+      "subcategories": [
+        { "id": "core-apps", "name": "Core Apps", "icon": "web" },
+        { "id": "ai-tools", "name": "AI Tools", "icon": "psychology" },
+        { "id": "dev-tools", "name": "Dev Tools", "icon": "code" },
+        { "id": "utilities", "name": "Utilities", "icon": "build" }
+      ]
+    },
+    {
+      "id": "documentation",
+      "name": "Documentation",
+      "icon": "menu_book",
+      "description": "Platform documentation and guides",
+      "colorClass": "docs",
+      "expanded": true,
+      "subcategories": [
+        { "id": "platform-docs", "name": "Platform Docs", "icon": "description" },
+        { "id": "guides", "name": "Guides & Laws", "icon": "gavel" }
+      ]
+    },
+    {
+      "id": "demos",
+      "name": "Demos",
+      "icon": "play_circle",
+      "description": "Live demonstrations and UI showcases",
+      "colorClass": "demo",
+      "expanded": true,
+      "subcategories": [
+        { "id": "live-demos", "name": "Live Demos", "icon": "cloud" },
+        { "id": "ui-demos", "name": "UI Demos", "icon": "desktop_windows" }
+      ]
+    },
+    {
+      "id": "api-infrastructure",
+      "name": "API & Infrastructure",
+      "icon": "api",
+      "description": "API references and infrastructure documentation",
+      "colorClass": "api",
+      "expanded": true,
+      "subcategories": [
+        { "id": "api-docs", "name": "API Documentation", "icon": "integration_instructions" },
+        { "id": "use-cases", "name": "Use Cases", "icon": "lightbulb" }
+      ]
+    },
+    {
+      "id": "compliance",
+      "name": "Compliance",
+      "icon": "verified_user",
+      "description": "Security and compliance documentation",
+      "colorClass": "compliance",
+      "expanded": true,
+      "subcategories": [
+        { "id": "security", "name": "Security", "icon": "lock" },
+        { "id": "bom", "name": "Bill of Materials", "icon": "inventory" }
+      ]
+    },
+    {
+      "id": "ai-agents",
+      "name": "AI & Agents",
+      "icon": "smart_toy",
+      "description": "AI-powered tools and agent systems",
+      "colorClass": "ai",
+      "expanded": true,
+      "subcategories": [
+        { "id": "agents", "name": "Agents", "icon": "psychology" },
+        { "id": "ml-tools", "name": "ML Tools", "icon": "model_training" }
+      ]
+    }
+  ],
   "links": [
     {
       "id": "nstarx-vue",
@@ -16,12 +92,14 @@
       "description": "NStarX Vue.js Application",
       "url": "https://nstarx.github.io/nstarx-vue/",
       "displayUrl": "nstarx.github.io/nstarx-vue/",
-      "badge": "App",
+      "badge": "Documentation",
+      "category": "documentation",
+      "subcategory": "platform-docs",
       "terminalBadge": ["READY"],
       "icon": "web",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
       "colorClass": "cyan-168",
-      "terminalLegend": "[ APP ]",
+      "terminalLegend": "[ DOCUMENTATION ]",
       "enabled": true
     },
     {
@@ -31,12 +109,14 @@
       "description": "Claude Memory Management",
       "url": "https://nstarx.github.io/claude-memory/",
       "displayUrl": "nstarx.github.io/claude-memory/",
-      "badge": "App",
+      "badge": "Documentation",
+      "category": "documentation",
+      "subcategory": "platform-docs",
       "terminalBadge": ["READY"],
       "icon": "memory",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
       "colorClass": "cyan-168",
-      "terminalLegend": "[ APP ]",
+      "terminalLegend": "[ DOCUMENTATION ]",
       "enabled": true
     },
     {
@@ -47,6 +127,8 @@
       "url": "https://nstarx.github.io/DLNP_UseCases/",
       "displayUrl": "https://nstarx.github.io/DLNP_UseCases/",
       "badge": "App",
+      "category": "api-infrastructure",
+      "subcategory": "use-cases",
       "terminalBadge": ["READY"],
       "icon": "lightbulb",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -62,6 +144,8 @@
       "url": "http://kubernetes.go.ro:3022/",
       "displayUrl": "kubernetes.go.ro:3022/",
       "badge": "App",
+      "category": "applications",
+      "subcategory": "core-apps",
       "terminalBadge": ["READY"],
       "icon": "paid",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -77,6 +161,8 @@
       "url": "http://kubernetes.go.ro:3021/",
       "displayUrl": "kubernetes.go.ro:3021/",
       "badge": "App",
+      "category": "applications",
+      "subcategory": "ai-tools",
       "terminalBadge": ["READY"],
       "icon": "psychology",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -92,6 +178,8 @@
       "url": "http://kubernetes.go.ro:3020/",
       "displayUrl": "kubernetes.go.ro:3020/",
       "badge": "App",
+      "category": "applications",
+      "subcategory": "dev-tools",
       "terminalBadge": ["READY"],
       "icon": "account_tree",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -106,12 +194,14 @@
       "description": "Strategic Context Management",
       "url": "https://nstarx.github.io/claude_internals/",
       "displayUrl": "nstarx.github.io/claude_internals/",
-      "badge": "App",
+      "badge": "Documentation",
+      "category": "documentation",
+      "subcategory": "platform-docs",
       "terminalBadge": ["READY"],
       "icon": "code",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
       "colorClass": "cyan-168",
-      "terminalLegend": "[ APP ]",
+      "terminalLegend": "[ DOCUMENTATION ]",
       "enabled": true
     },
     {
@@ -122,6 +212,8 @@
       "url": "http://kubernetes.go.ro:3007/",
       "displayUrl": "kubernetes.go.ro:3007/",
       "badge": "App",
+      "category": "applications",
+      "subcategory": "core-apps",
       "terminalBadge": ["READY"],
       "icon": "timeline",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -137,6 +229,8 @@
       "url": "https://remotebutton-gtxcp.ondigitalocean.app/",
       "displayUrl": "remotebutton-gtxcp.ondigitalocean.app/",
       "badge": "App",
+      "category": "applications",
+      "subcategory": "utilities",
       "terminalBadge": ["READY"],
       "icon": "toggle_on",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -152,6 +246,8 @@
       "url": "https://nstarx.github.io/CardinalNStar/engineering-laws.html",
       "displayUrl": "nstarx.github.io/CardinalNStar/",
       "badge": "Documentation",
+      "category": "documentation",
+      "subcategory": "guides",
       "terminalBadge": ["DOCS", "READY"],
       "icon": "gavel",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -167,6 +263,8 @@
       "url": "https://nstarx.github.io/DLNP_Docs/",
       "displayUrl": "nstarx.github.io/DLNP_Docs",
       "badge": "Documentation",
+      "category": "documentation",
+      "subcategory": "platform-docs",
       "terminalBadge": ["DOCS", "READY"],
       "icon": "menu_book",
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
@@ -182,6 +280,8 @@
       "url": "http://nstarx-converge.westus2.cloudapp.azure.com",
       "displayUrl": "nstarx-converge.westus2.cloudapp.azure.com",
       "badge": "Live Demo",
+      "category": "demos",
+      "subcategory": "live-demos",
       "terminalBadge": ["LIVE", "ONLINE"],
       "icon": "🖥️",
       "svgPath": "M3,12V6.5L9,5.5L15,6.5V11.5L9,10.5L3,12M3,13L9,14.5L15,13V17L9,18L3,17V13M10,5.5V6.5L9,6.5L8,6.5V5.5L9,5.5H10M15,7.5L9,8.5L3,7.5V8.5L9,9.5L15,8.5V7.5M9,15.5L3,14.5V15.5L9,16.5L15,15.5V14.5L9,15.5M21,11.5V17L15,18V13L21,11.5M21,10.5L15,12V6.5L21,5.5V10.5Z",
@@ -197,6 +297,8 @@
       "url": "https://nstarx-ljt7v.ondigitalocean.app/",
       "displayUrl": "nstarx-ljt7v.ondigitalocean.app",
       "badge": "UI Demo",
+      "category": "demos",
+      "subcategory": "ui-demos",
       "terminalBadge": ["UI", "DEMO"],
       "icon": "☁️",
       "svgPath": "M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z",
@@ -212,6 +314,8 @@
       "url": "https://nstarx.github.io/DLNP_API_Garden/",
       "displayUrl": "nstarx.github.io/DLNP_API_Garden",
       "badge": "API Reference",
+      "category": "api-infrastructure",
+      "subcategory": "api-docs",
       "terminalBadge": ["API", "SPECS"],
       "icon": "🔌",
       "svgPath": "M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M11,16C10.4,16 10,15.6 10,15C10,14.4 10.4,14 11,14C11.6,14 12,14.4 12,15C12,15.6 11.6,16 11,16M13,12C12.4,12 12,11.6 12,11C12,10.4 12.4,10 13,10C13.6,10 14,10.4 14,11C14,11.6 13.6,12 13,12M14,7H10V4H14V7Z",
@@ -220,13 +324,15 @@
       "enabled": true
     },
     {
-      "id": "compliance",
+      "id": "compliance-portal",
       "title": "Compliance Portal",
       "shortTitle": "Compliance Portal",
       "description": "Security compliance documentation, policies, and regulatory requirements for NStarX platform operations.",
       "url": "https://nstarx.github.io/DLNP_Compliance/",
       "displayUrl": "nstarx.github.io/DLNP_Compliance",
       "badge": "Compliance",
+      "category": "compliance",
+      "subcategory": "security",
       "terminalBadge": ["SECURE", "COMPLIANT"],
       "icon": "🔒",
       "svgPath": "M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z",
@@ -235,13 +341,15 @@
       "enabled": true
     },
     {
-      "id": "compliance",
+      "id": "kubeflow-bom",
       "title": "Kubeflow BOM",
       "shortTitle": "Kubeflow BOM",
       "description": "Kubeflow BOM.",
       "url": "https://nstarx.github.io/kubeflow_bom/",
       "displayUrl": "nstarx.github.io/kubeflow_bom/",
       "badge": "Compliance",
+      "category": "compliance",
+      "subcategory": "bom",
       "terminalBadge": ["SECURE", "COMPLIANT"],
       "icon": "🔒",
       "svgPath": "M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M17.13,17C15.92,18.85 14.11,20.24 12,20.92C9.89,20.24 8.08,18.85 6.87,17C6.53,16.5 6.24,16 6,15.47C6,13.82 8.71,12.47 12,12.47C15.29,12.47 18,13.79 18,15.47C17.76,16 17.47,16.5 17.13,17Z",
@@ -257,6 +365,8 @@
       "url": "https://nstarx.github.io/DLNP_Agents/",
       "displayUrl": "nstarx.github.io/DLNP_Agents",
       "badge": "AI Agents",
+      "category": "ai-agents",
+      "subcategory": "agents",
       "terminalBadge": ["AI", "AGENTS"],
       "icon": "🤖",
       "svgPath": "M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z",
