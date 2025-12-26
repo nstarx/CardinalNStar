@@ -1009,6 +1009,22 @@
             showDialog('help-dialog');
         }
 
+        function updateSubcategoryOptions() {
+            const categoryId = document.getElementById('add-category').value;
+            const subcatSelect = document.getElementById('add-subcategory');
+            const category = categories.find(c => c.id === categoryId);
+
+            subcatSelect.innerHTML = '';
+            if (category && category.subcategories) {
+                category.subcategories.forEach(subcat => {
+                    const option = document.createElement('option');
+                    option.value = subcat.id;
+                    option.textContent = subcat.name;
+                    subcatSelect.appendChild(option);
+                });
+            }
+        }
+
         function showAddDialog() {
             document.getElementById('add-title').value = '';
             document.getElementById('add-url').value = '';
