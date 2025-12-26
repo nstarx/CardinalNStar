@@ -751,6 +751,95 @@
             max-height: 0 !important;
         }
 
+        /* Subcategory Styles */
+        .subcategory-section {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            padding-left: 16px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .subcategory-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+        }
+
+        .subcategory-header:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+        }
+
+        .subcategory-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            flex-shrink: 0;
+        }
+
+        .subcategory-icon .material-symbols-outlined {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .subcategory-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .subcategory-count {
+            padding: 2px 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .subcategory-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .subcategory-toggle .material-symbols-outlined {
+            font-size: 16px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .subcategory-header.collapsed .subcategory-toggle .material-symbols-outlined {
+            transform: rotate(-90deg);
+        }
+
+        .subcategory-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .subcategory-content.collapsed {
+            max-height: 0 !important;
+        }
+
+        .subcategory-content .resources-grid {
+            margin-left: 0;
+        }
+
         /* View Toggle Button */
         .view-toggle {
             display: flex;
@@ -974,13 +1063,22 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Folder</label>
-                    <select id="add-category" class="form-input">
+                    <select id="add-category" class="form-input" onchange="updateSubcategoryOptions()">
                         <option value="applications">Applications</option>
                         <option value="documentation">Documentation</option>
                         <option value="demos">Demos</option>
                         <option value="api-infrastructure">API & Infrastructure</option>
                         <option value="compliance">Compliance</option>
                         <option value="ai-agents">AI & Agents</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subfolder</label>
+                    <select id="add-subcategory" class="form-input">
+                        <option value="core-apps">Core Apps</option>
+                        <option value="ai-tools">AI Tools</option>
+                        <option value="dev-tools">Dev Tools</option>
+                        <option value="utilities">Utilities</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1176,7 +1274,7 @@
             let html = '';
             let globalIndex = 0;
 
-            // Group items by category
+            // Group items by category and subcategory
             const groupedItems = {};
             const uncategorized = [];
 
@@ -1184,9 +1282,16 @@
                 item._originalIndex = originalIndex;
                 if (item.category) {
                     if (!groupedItems[item.category]) {
-                        groupedItems[item.category] = [];
+                        groupedItems[item.category] = { items: [], subcategories: {} };
                     }
-                    groupedItems[item.category].push(item);
+                    if (item.subcategory) {
+                        if (!groupedItems[item.category].subcategories[item.subcategory]) {
+                            groupedItems[item.category].subcategories[item.subcategory] = [];
+                        }
+                        groupedItems[item.category].subcategories[item.subcategory].push(item);
+                    } else {
+                        groupedItems[item.category].items.push(item);
+                    }
                 } else {
                     uncategorized.push(item);
                 }
@@ -1194,8 +1299,11 @@
 
             // Render each category
             categories.forEach(category => {
-                const categoryItems = groupedItems[category.id] || [];
-                if (categoryItems.length === 0) return;
+                const categoryData = groupedItems[category.id] || { items: [], subcategories: {} };
+                const totalItems = categoryData.items.length +
+                    Object.values(categoryData.subcategories).reduce((sum, arr) => sum + arr.length, 0);
+
+                if (totalItems === 0) return;
 
                 const isExpanded = categoryStates[category.id] !== false;
 
@@ -1212,7 +1320,7 @@
                                 <div class="category-description">${category.description}</div>
                             </div>
                             <div class="category-meta">
-                                <span class="category-count">${categoryItems.length}</span>
+                                <span class="category-count">${totalItems}</span>
                                 <div class="category-toggle">
                                     <span class="material-symbols-outlined">expand_more</span>
                                 </div>
@@ -1220,13 +1328,60 @@
                         </div>
                         <div class="category-content ${isExpanded ? '' : 'collapsed'}"
                              id="category-content-${category.id}">
-                            <div class="resources-grid">
-                                ${categoryItems.map(item => {
-                                    const cardHtml = renderCard(item, globalIndex);
-                                    globalIndex++;
-                                    return cardHtml;
-                                }).join('')}
+                `;
+
+                // Render subcategories if they exist
+                if (category.subcategories && category.subcategories.length > 0) {
+                    category.subcategories.forEach(subcat => {
+                        const subcatItems = categoryData.subcategories[subcat.id] || [];
+                        if (subcatItems.length === 0) return;
+
+                        const subcatKey = `${category.id}:${subcat.id}`;
+                        const isSubcatExpanded = categoryStates[subcatKey] !== false;
+
+                        html += `
+                            <div class="subcategory-section">
+                                <div class="subcategory-header ${isSubcatExpanded ? '' : 'collapsed'}"
+                                     data-subcategory="${subcatKey}"
+                                     onclick="event.stopPropagation(); toggleSubcategory('${subcatKey}')">
+                                    <div class="subcategory-icon">
+                                        <span class="material-symbols-outlined">${subcat.icon}</span>
+                                    </div>
+                                    <span class="subcategory-name">${subcat.name}</span>
+                                    <span class="subcategory-count">${subcatItems.length}</span>
+                                    <div class="subcategory-toggle">
+                                        <span class="material-symbols-outlined">expand_more</span>
+                                    </div>
+                                </div>
+                                <div class="subcategory-content ${isSubcatExpanded ? '' : 'collapsed'}"
+                                     id="subcategory-content-${subcatKey.replace(':', '-')}">
+                                    <div class="resources-grid">
+                                        ${subcatItems.map(item => {
+                                            const cardHtml = renderCard(item, globalIndex);
+                                            globalIndex++;
+                                            return cardHtml;
+                                        }).join('')}
+                                    </div>
+                                </div>
                             </div>
+                        `;
+                    });
+                }
+
+                // Render items without subcategory directly
+                if (categoryData.items.length > 0) {
+                    html += `
+                        <div class="resources-grid">
+                            ${categoryData.items.map(item => {
+                                const cardHtml = renderCard(item, globalIndex);
+                                globalIndex++;
+                                return cardHtml;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+
+                html += `
                         </div>
                     </div>
                 `;
@@ -1267,6 +1422,20 @@
             }
 
             grid.innerHTML = html;
+        }
+
+        function toggleSubcategory(subcatKey) {
+            categoryStates[subcatKey] = !categoryStates[subcatKey];
+            localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
+
+            const safeKey = subcatKey.replace(':', '-');
+            const header = document.querySelector(`[data-subcategory="${subcatKey}"]`);
+            const content = document.getElementById(`subcategory-content-${safeKey}`);
+
+            if (header && content) {
+                header.classList.toggle('collapsed', !categoryStates[subcatKey]);
+                content.classList.toggle('collapsed', !categoryStates[subcatKey]);
+            }
         }
 
         function renderCard(link, index) {
@@ -1328,12 +1497,29 @@
             showDialog('help-dialog');
         }
 
+        function updateSubcategoryOptions() {
+            const categoryId = document.getElementById('add-category').value;
+            const subcatSelect = document.getElementById('add-subcategory');
+            const category = categories.find(c => c.id === categoryId);
+
+            subcatSelect.innerHTML = '';
+            if (category && category.subcategories) {
+                category.subcategories.forEach(subcat => {
+                    const option = document.createElement('option');
+                    option.value = subcat.id;
+                    option.textContent = subcat.name;
+                    subcatSelect.appendChild(option);
+                });
+            }
+        }
+
         function showAddDialog() {
             document.getElementById('add-title').value = '';
             document.getElementById('add-url').value = '';
             document.getElementById('add-desc').value = '';
             document.getElementById('add-badge').value = 'App';
             document.getElementById('add-category').value = 'applications';
+            updateSubcategoryOptions();
             document.getElementById('add-icon').value = 'description';
             showDialog('add-dialog');
             setTimeout(() => document.getElementById('add-title').focus(), 100);
@@ -1345,6 +1531,7 @@
             const desc = document.getElementById('add-desc').value.trim();
             const badge = document.getElementById('add-badge').value;
             const category = document.getElementById('add-category').value;
+            const subcategory = document.getElementById('add-subcategory').value;
             const icon = document.getElementById('add-icon').value;
 
             if (!title || !url) {
@@ -1361,6 +1548,7 @@
                 displayUrl: url.replace(/^https?:\/\//, '').split('/')[0],
                 badge: badge,
                 category: category,
+                subcategory: subcategory,
                 icon: icon,
                 enabled: true,
                 isLocal: true
