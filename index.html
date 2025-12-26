@@ -645,6 +645,172 @@
         .resource-card.selected::before {
             opacity: 1;
         }
+
+        /* Category Styles */
+        .category-section {
+            margin-bottom: 32px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .category-header:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border-hover);
+        }
+
+        .category-header .material-symbols-outlined {
+            font-size: 24px;
+            color: var(--cardinal);
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .category-count {
+            padding: 4px 10px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .category-chevron {
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .category-header.collapsed .category-chevron {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            display: block;
+        }
+
+        .category-content.collapsed {
+            display: none;
+        }
+
+        /* Subcategory Styles */
+        .subcategory-section {
+            margin-left: 24px;
+            margin-bottom: 20px;
+            padding-left: 16px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .subcategory-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .subcategory-header:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .subcategory-header .material-symbols-outlined {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .subcategory-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+
+        .subcategory-count {
+            padding: 2px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .subcategory-chevron {
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .subcategory-header.collapsed .subcategory-chevron {
+            transform: rotate(-90deg);
+        }
+
+        .subcategory-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .subcategory-content.collapsed {
+            display: none;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-right: 8px;
+        }
+
+        .view-toggle-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .view-toggle-btn:hover {
+            color: var(--text-secondary);
+        }
+
+        .view-toggle-btn.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .view-toggle-btn .material-symbols-outlined {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -655,6 +821,16 @@
             <div class="brand-text">NStarX <span>Cardinal</span></div>
         </div>
         <div class="navbar-nav">
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" id="grouped-btn" onclick="setViewMode('grouped')">
+                    <span class="material-symbols-outlined">folder</span>
+                    Grouped
+                </button>
+                <button class="view-toggle-btn" id="flat-btn" onclick="setViewMode('flat')">
+                    <span class="material-symbols-outlined">view_list</span>
+                    Flat
+                </button>
+            </div>
             <button class="nav-btn" onclick="showAddDialog()">
                 <span class="material-symbols-outlined">add</span>
                 Add
@@ -807,7 +983,19 @@
                     <input type="text" id="add-desc" class="form-input" placeholder="Brief description">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Category</label>
+                    <label class="form-label">Folder</label>
+                    <select id="add-category" class="form-input" onchange="updateSubcategoryOptions()">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subfolder</label>
+                    <select id="add-subcategory" class="form-input">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Badge</label>
                     <select id="add-badge" class="form-input">
                         <option value="App">Application</option>
                         <option value="Documentation">Documentation</option>
@@ -873,9 +1061,14 @@
     <script>
         let items = [];
         let localItems = [];
+        let categories = [];
         let selectedIndex = 0;
         let mouseEnabled = false;
+        let viewMode = 'grouped';
+        let categoryStates = {};
         const LOCAL_STORAGE_KEY = 'nstarx_local_resources';
+        const VIEW_MODE_KEY = 'nstarx_view_mode';
+        const CATEGORY_STATES_KEY = 'nstarx_category_states';
 
         // Icon mapping from emoji to material icons
         const iconMap = {
@@ -917,11 +1110,31 @@
                 document.getElementById('version').textContent = data.portal.version;
                 document.title = 'NStarX Platform | Cardinal';
 
+                // Load categories
+                categories = data.categories || [];
+
                 // Load from data.json
                 const jsonItems = data.links.filter(link => link.enabled);
 
                 // Load from localStorage
                 localItems = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+                viewMode = localStorage.getItem(VIEW_MODE_KEY) || 'grouped';
+                categoryStates = JSON.parse(localStorage.getItem(CATEGORY_STATES_KEY) || '{}');
+
+                // Initialize category states from data
+                categories.forEach(cat => {
+                    if (categoryStates[cat.id] === undefined) {
+                        categoryStates[cat.id] = cat.expanded !== false;
+                    }
+                    if (cat.subcategories) {
+                        cat.subcategories.forEach(subcat => {
+                            const key = `${cat.id}:${subcat.id}`;
+                            if (categoryStates[key] === undefined) {
+                                categoryStates[key] = true;
+                            }
+                        });
+                    }
+                });
 
                 // Merge: local items first, then json items
                 items = [...localItems, ...jsonItems];
@@ -935,6 +1148,8 @@
                     i.badge.toLowerCase().includes('doc') || i.badge.toLowerCase().includes('api')
                 ).length;
 
+                // Update view toggle buttons
+                updateViewToggle();
                 renderList();
                 setTimeout(() => { mouseEnabled = true; }, 100);
             } catch (error) {
@@ -946,9 +1161,28 @@
             }
         }
 
+        function updateViewToggle() {
+            document.getElementById('grouped-btn').classList.toggle('active', viewMode === 'grouped');
+            document.getElementById('flat-btn').classList.toggle('active', viewMode === 'flat');
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            localStorage.setItem(VIEW_MODE_KEY, mode);
+            updateViewToggle();
+            renderList();
+        }
+
         function renderList() {
             const grid = document.getElementById('links-grid');
+            if (viewMode === 'grouped') {
+                renderGroupedList(grid);
+            } else {
+                renderFlatList(grid);
+            }
+        }
 
+        function renderFlatList(grid) {
             grid.innerHTML = items.map((link, i) => {
                 const num = i + 1;
                 const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
@@ -976,6 +1210,152 @@
                     </a>
                 `;
             }).join('');
+        }
+
+        function renderGroupedList(grid) {
+            let html = '';
+
+            categories.forEach(category => {
+                const categoryItems = items.filter(item => item.category === category.id);
+                if (categoryItems.length === 0) return;
+
+                const isExpanded = categoryStates[category.id] !== false;
+
+                html += `
+                    <div class="category-section">
+                        <div class="category-header ${isExpanded ? '' : 'collapsed'}" onclick="toggleCategory('${category.id}')">
+                            <span class="material-symbols-outlined">${category.icon}</span>
+                            <span class="category-title">${category.name}</span>
+                            <span class="category-count">${categoryItems.length}</span>
+                            <span class="material-symbols-outlined category-chevron">expand_more</span>
+                        </div>
+                        <div class="category-content ${isExpanded ? '' : 'collapsed'}" id="category-${category.id}">
+                `;
+
+                // Render subcategories
+                if (category.subcategories) {
+                    category.subcategories.forEach(subcat => {
+                        const subcatItems = categoryItems.filter(item => item.subcategory === subcat.id);
+                        if (subcatItems.length === 0) return;
+
+                        const subcatKey = `${category.id}:${subcat.id}`;
+                        const isSubExpanded = categoryStates[subcatKey] !== false;
+
+                        html += `
+                            <div class="subcategory-section">
+                                <div class="subcategory-header ${isSubExpanded ? '' : 'collapsed'}" onclick="toggleSubcategory('${subcatKey}')">
+                                    <span class="material-symbols-outlined">${subcat.icon}</span>
+                                    <span class="subcategory-title">${subcat.name}</span>
+                                    <span class="subcategory-count">${subcatItems.length}</span>
+                                    <span class="material-symbols-outlined subcategory-chevron">expand_more</span>
+                                </div>
+                                <div class="subcategory-content ${isSubExpanded ? '' : 'collapsed'}" id="subcategory-${subcatKey.replace(':', '-')}">
+                        `;
+
+                        subcatItems.forEach(link => {
+                            const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
+                            html += `
+                                <a href="${link.url}" class="resource-card" target="_blank">
+                                    <div class="card-header">
+                                        <div class="card-icon">
+                                            <span class="material-symbols-outlined">${getIcon(link.icon)}</span>
+                                        </div>
+                                        <span class="card-badge ${getBadgeClass(link.badge)}">${link.badge}</span>
+                                    </div>
+                                    <h3 class="card-title">${link.title}${localBadge}</h3>
+                                    <p class="card-description">${link.description}</p>
+                                    <div class="card-footer">
+                                        <span class="card-url">
+                                            <span class="material-symbols-outlined">link</span>
+                                            ${link.displayUrl || link.url.replace(/^https?:\/\//, '').split('/')[0]}
+                                        </span>
+                                    </div>
+                                </a>
+                            `;
+                        });
+
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Render uncategorized items within this category
+                const uncategorizedItems = categoryItems.filter(item => !item.subcategory);
+                if (uncategorizedItems.length > 0) {
+                    html += `<div class="subcategory-content">`;
+                    uncategorizedItems.forEach(link => {
+                        const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
+                        html += `
+                            <a href="${link.url}" class="resource-card" target="_blank">
+                                <div class="card-header">
+                                    <div class="card-icon">
+                                        <span class="material-symbols-outlined">${getIcon(link.icon)}</span>
+                                    </div>
+                                    <span class="card-badge ${getBadgeClass(link.badge)}">${link.badge}</span>
+                                </div>
+                                <h3 class="card-title">${link.title}${localBadge}</h3>
+                                <p class="card-description">${link.description}</p>
+                                <div class="card-footer">
+                                    <span class="card-url">
+                                        <span class="material-symbols-outlined">link</span>
+                                        ${link.displayUrl || link.url.replace(/^https?:\/\//, '').split('/')[0]}
+                                    </span>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render uncategorized items (no category at all)
+            const uncategorizedItems = items.filter(item => !item.category);
+            if (uncategorizedItems.length > 0) {
+                html += `<div class="resources-grid">`;
+                uncategorizedItems.forEach(link => {
+                    const localBadge = link.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
+                    html += `
+                        <a href="${link.url}" class="resource-card" target="_blank">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <span class="material-symbols-outlined">${getIcon(link.icon)}</span>
+                                </div>
+                                <span class="card-badge ${getBadgeClass(link.badge)}">${link.badge}</span>
+                            </div>
+                            <h3 class="card-title">${link.title}${localBadge}</h3>
+                            <p class="card-description">${link.description}</p>
+                            <div class="card-footer">
+                                <span class="card-url">
+                                    <span class="material-symbols-outlined">link</span>
+                                    ${link.displayUrl || link.url.replace(/^https?:\/\//, '').split('/')[0]}
+                                </span>
+                            </div>
+                        </a>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function toggleCategory(categoryId) {
+            categoryStates[categoryId] = !categoryStates[categoryId];
+            localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
+            renderList();
+        }
+
+        function toggleSubcategory(subcatKey) {
+            categoryStates[subcatKey] = !categoryStates[subcatKey];
+            localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
+            renderList();
         }
 
         function updateSelection() {
@@ -1009,6 +1389,26 @@
             showDialog('help-dialog');
         }
 
+        function showAddDialog() {
+            document.getElementById('add-title').value = '';
+            document.getElementById('add-url').value = '';
+            document.getElementById('add-desc').value = '';
+            document.getElementById('add-badge').value = 'App';
+            document.getElementById('add-icon').value = 'description';
+
+            // Populate category dropdown
+            const catSelect = document.getElementById('add-category');
+            catSelect.innerHTML = categories.map(cat =>
+                `<option value="${cat.id}">${cat.name}</option>`
+            ).join('');
+
+            // Populate subcategory dropdown
+            updateSubcategoryOptions();
+
+            showDialog('add-dialog');
+            setTimeout(() => document.getElementById('add-title').focus(), 100);
+        }
+
         function updateSubcategoryOptions() {
             const categoryId = document.getElementById('add-category').value;
             const subcatSelect = document.getElementById('add-subcategory');
@@ -1025,20 +1425,12 @@
             }
         }
 
-        function showAddDialog() {
-            document.getElementById('add-title').value = '';
-            document.getElementById('add-url').value = '';
-            document.getElementById('add-desc').value = '';
-            document.getElementById('add-badge').value = 'App';
-            document.getElementById('add-icon').value = 'description';
-            showDialog('add-dialog');
-            setTimeout(() => document.getElementById('add-title').focus(), 100);
-        }
-
         function saveNewResource() {
             const title = document.getElementById('add-title').value.trim();
             const url = document.getElementById('add-url').value.trim();
             const desc = document.getElementById('add-desc').value.trim();
+            const category = document.getElementById('add-category').value;
+            const subcategory = document.getElementById('add-subcategory').value;
             const badge = document.getElementById('add-badge').value;
             const icon = document.getElementById('add-icon').value;
 
@@ -1055,6 +1447,8 @@
                 url: url,
                 displayUrl: url.replace(/^https?:\/\//, '').split('/')[0],
                 badge: badge,
+                category: category,
+                subcategory: subcategory,
                 icon: icon,
                 enabled: true,
                 isLocal: true
