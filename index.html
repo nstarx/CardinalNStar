@@ -811,6 +811,202 @@
         .view-toggle-btn .material-symbols-outlined {
             font-size: 16px;
         }
+
+        /* Search Modal Styles */
+        .search-modal {
+            width: 100%;
+            max-width: 640px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            gap: 12px;
+        }
+
+        .search-input-wrapper .material-symbols-outlined {
+            font-size: 24px;
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            color: var(--text-primary);
+            font-family: inherit;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-shortcut {
+            padding: 4px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        .search-results {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .search-results-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .search-results-empty .material-symbols-outlined {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .search-result-item:hover,
+        .search-result-item.selected {
+            background: var(--bg-tertiary);
+        }
+
+        .search-result-item.selected {
+            border: 1px solid var(--cardinal);
+        }
+
+        .search-result-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--cardinal), var(--cardinal-dark));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .search-result-icon .material-symbols-outlined {
+            font-size: 20px;
+            color: white;
+        }
+
+        .search-result-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-result-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-result-title .card-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+        }
+
+        .search-result-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-url {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .search-result-url .material-symbols-outlined {
+            font-size: 14px;
+        }
+
+        .search-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-footer-hints {
+            display: flex;
+            gap: 16px;
+        }
+
+        .search-footer-hint {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .search-footer-hint .hint-key {
+            padding: 2px 6px;
+            font-size: 10px;
+        }
+
+        .search-result-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        mark {
+            background: rgba(196, 30, 58, 0.3);
+            color: var(--cardinal-light);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* Search button in navbar */
+        .nav-btn.search-btn {
+            padding: 8px 14px;
+            gap: 8px;
+        }
+
+        .nav-btn.search-btn .search-hint {
+            padding: 2px 6px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
     </style>
 </head>
 <body>
@@ -821,6 +1017,11 @@
             <div class="brand-text">NStarX <span>Cardinal</span></div>
         </div>
         <div class="navbar-nav">
+            <button class="nav-btn search-btn" onclick="showSearch()">
+                <span class="material-symbols-outlined">search</span>
+                Search
+                <span class="search-hint" id="search-shortcut-hint">⌘K</span>
+            </button>
             <div class="view-toggle">
                 <button class="view-toggle-btn active" id="grouped-btn" onclick="setViewMode('grouped')">
                     <span class="material-symbols-outlined">folder</span>
@@ -896,6 +1097,10 @@
     <!-- Keyboard Hints -->
     <div class="keyboard-hint">
         <div class="hint-item">
+            <span class="hint-key" id="hint-search-key">⌘K</span>
+            <span>Search</span>
+        </div>
+        <div class="hint-item">
             <span class="hint-key">1-9</span>
             <span>Open resource</span>
         </div>
@@ -924,6 +1129,10 @@
             </div>
             <div class="modal-body">
                 <div class="help-shortcuts">
+                    <div class="help-item">
+                        <span class="help-key" id="help-search-key">⌘K</span>
+                        <span class="help-desc">Search resources</span>
+                    </div>
                     <div class="help-item">
                         <span class="help-key">1-9</span>
                         <span class="help-desc">Open resource directly</span>
@@ -1058,6 +1267,45 @@
         </div>
     </div>
 
+    <!-- Search Modal -->
+    <div class="modal-overlay" id="search-dialog">
+        <div class="modal search-modal">
+            <div class="search-input-wrapper">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text"
+                       id="search-input"
+                       class="search-input"
+                       placeholder="Search resources by name, URL, or description..."
+                       autocomplete="off"
+                       oninput="handleSearchInput(this.value)">
+                <span class="search-shortcut">ESC</span>
+            </div>
+            <div class="search-results" id="search-results">
+                <div class="search-results-empty">
+                    <span class="material-symbols-outlined">search</span>
+                    <p>Start typing to search resources</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-footer-hints">
+                    <div class="search-footer-hint">
+                        <span class="hint-key">&uarr;&darr;</span>
+                        <span>Navigate</span>
+                    </div>
+                    <div class="search-footer-hint">
+                        <span class="hint-key">Enter</span>
+                        <span>Open</span>
+                    </div>
+                    <div class="search-footer-hint">
+                        <span class="hint-key">ESC</span>
+                        <span>Close</span>
+                    </div>
+                </div>
+                <span class="search-result-count" id="search-result-count"></span>
+            </div>
+        </div>
+    </div>
+
     <script>
         let items = [];
         let localItems = [];
@@ -1066,9 +1314,12 @@
         let mouseEnabled = false;
         let viewMode = 'grouped';
         let categoryStates = {};
+        let searchResults = [];
+        let searchSelectedIndex = 0;
         const LOCAL_STORAGE_KEY = 'nstarx_local_resources';
         const VIEW_MODE_KEY = 'nstarx_view_mode';
         const CATEGORY_STATES_KEY = 'nstarx_category_states';
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
         // Icon mapping from emoji to material icons
         const iconMap = {
@@ -1150,6 +1401,7 @@
 
                 // Update view toggle buttons
                 updateViewToggle();
+                updateShortcutHints();
                 renderList();
                 setTimeout(() => { mouseEnabled = true; }, 100);
             } catch (error) {
@@ -1164,6 +1416,18 @@
         function updateViewToggle() {
             document.getElementById('grouped-btn').classList.toggle('active', viewMode === 'grouped');
             document.getElementById('flat-btn').classList.toggle('active', viewMode === 'flat');
+        }
+
+        function updateShortcutHints() {
+            // Update keyboard shortcut hints based on platform
+            const shortcutKey = isMac ? '⌘K' : 'Ctrl+K';
+            const searchShortcutHint = document.getElementById('search-shortcut-hint');
+            const hintSearchKey = document.getElementById('hint-search-key');
+            const helpSearchKey = document.getElementById('help-search-key');
+
+            if (searchShortcutHint) searchShortcutHint.textContent = shortcutKey;
+            if (hintSearchKey) hintSearchKey.textContent = shortcutKey;
+            if (helpSearchKey) helpSearchKey.textContent = shortcutKey;
         }
 
         function setViewMode(mode) {
@@ -1389,6 +1653,143 @@
             showDialog('help-dialog');
         }
 
+        // Search functions
+        function showSearch() {
+            searchResults = [];
+            searchSelectedIndex = 0;
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').innerHTML = `
+                <div class="search-results-empty">
+                    <span class="material-symbols-outlined">search</span>
+                    <p>Start typing to search resources</p>
+                </div>
+            `;
+            document.getElementById('search-result-count').textContent = '';
+            showDialog('search-dialog');
+            setTimeout(() => document.getElementById('search-input').focus(), 100);
+        }
+
+        function handleSearchInput(query) {
+            query = query.trim().toLowerCase();
+
+            if (!query) {
+                searchResults = [];
+                searchSelectedIndex = 0;
+                document.getElementById('search-results').innerHTML = `
+                    <div class="search-results-empty">
+                        <span class="material-symbols-outlined">search</span>
+                        <p>Start typing to search resources</p>
+                    </div>
+                `;
+                document.getElementById('search-result-count').textContent = '';
+                return;
+            }
+
+            // Search through items
+            searchResults = items.filter(item => {
+                const title = (item.title || '').toLowerCase();
+                const desc = (item.description || '').toLowerCase();
+                const url = (item.url || '').toLowerCase();
+                const badge = (item.badge || '').toLowerCase();
+                return title.includes(query) || desc.includes(query) || url.includes(query) || badge.includes(query);
+            });
+
+            // Sort results: title matches first, then URL, then description
+            searchResults.sort((a, b) => {
+                const aTitle = (a.title || '').toLowerCase();
+                const bTitle = (b.title || '').toLowerCase();
+                const aInTitle = aTitle.includes(query);
+                const bInTitle = bTitle.includes(query);
+                if (aInTitle && !bInTitle) return -1;
+                if (!aInTitle && bInTitle) return 1;
+                return 0;
+            });
+
+            searchSelectedIndex = 0;
+            renderSearchResults(query);
+        }
+
+        function highlightMatch(text, query) {
+            if (!query || !text) return text;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+
+        function renderSearchResults(query) {
+            const container = document.getElementById('search-results');
+
+            if (searchResults.length === 0) {
+                container.innerHTML = `
+                    <div class="search-results-empty">
+                        <span class="material-symbols-outlined">search_off</span>
+                        <p>No resources found for "${query}"</p>
+                    </div>
+                `;
+                document.getElementById('search-result-count').textContent = '0 results';
+                return;
+            }
+
+            container.innerHTML = searchResults.map((item, i) => {
+                const localBadge = item.isLocal ? '<span class="local-indicator">LOCAL</span>' : '';
+                return `
+                    <div class="search-result-item ${i === searchSelectedIndex ? 'selected' : ''}"
+                         data-index="${i}"
+                         onclick="openSearchResult(${i})"
+                         onmouseenter="selectSearchResult(${i})">
+                        <div class="search-result-icon">
+                            <span class="material-symbols-outlined">${getIcon(item.icon)}</span>
+                        </div>
+                        <div class="search-result-content">
+                            <div class="search-result-title">
+                                ${highlightMatch(item.title, query)}${localBadge}
+                                <span class="card-badge ${getBadgeClass(item.badge)}">${item.badge}</span>
+                            </div>
+                            <div class="search-result-desc">${highlightMatch(item.description, query)}</div>
+                        </div>
+                        <div class="search-result-url">
+                            <span class="material-symbols-outlined">link</span>
+                            ${highlightMatch(item.displayUrl || item.url.replace(/^https?:\/\//, '').split('/')[0], query)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('search-result-count').textContent =
+                `${searchResults.length} result${searchResults.length === 1 ? '' : 's'}`;
+        }
+
+        function selectSearchResult(index) {
+            searchSelectedIndex = index;
+            document.querySelectorAll('.search-result-item').forEach((el, i) => {
+                el.classList.toggle('selected', i === index);
+            });
+        }
+
+        function openSearchResult(index) {
+            if (searchResults[index]) {
+                window.open(searchResults[index].url, '_blank');
+                closeDialog('search-dialog');
+            }
+        }
+
+        function navigateSearchResults(direction) {
+            if (searchResults.length === 0) return;
+
+            if (direction === 'down') {
+                searchSelectedIndex = Math.min(searchSelectedIndex + 1, searchResults.length - 1);
+            } else {
+                searchSelectedIndex = Math.max(searchSelectedIndex - 1, 0);
+            }
+
+            selectSearchResult(searchSelectedIndex);
+
+            // Scroll into view
+            const selected = document.querySelector('.search-result-item.selected');
+            if (selected) {
+                selected.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+        }
+
         function showAddDialog() {
             document.getElementById('add-title').value = '';
             document.getElementById('add-url').value = '';
@@ -1497,6 +1898,46 @@
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
+            const searchDialogOpen = document.getElementById('search-dialog').classList.contains('active');
+
+            // Cmd/Ctrl+K - Open search (works globally)
+            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                if (searchDialogOpen) {
+                    closeDialog('search-dialog');
+                } else {
+                    closeAllDialogs();
+                    showSearch();
+                }
+                return;
+            }
+
+            // Handle search dialog keyboard navigation
+            if (searchDialogOpen) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeDialog('search-dialog');
+                    return;
+                }
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateSearchResults('down');
+                    return;
+                }
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateSearchResults('up');
+                    return;
+                }
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    openSearchResult(searchSelectedIndex);
+                    return;
+                }
+                return;
+            }
+
+            // Handle other dialogs
             if (isDialogOpen()) {
                 if (e.key === 'Escape') {
                     e.preventDefault();
