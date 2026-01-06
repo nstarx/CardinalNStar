@@ -1611,22 +1611,27 @@
         }
 
         function toggleCategory(categoryId) {
-            const isExpanding = !categoryStates[categoryId];
-            // Accordion: collapse other categories when expanding one
-            if (isExpanding) {
-                categories.forEach(cat => {
-                    if (cat.id !== categoryId) {
-                        categoryStates[cat.id] = false;
-                    }
-                });
-            }
-            categoryStates[categoryId] = isExpanding;
+            categoryStates[categoryId] = !categoryStates[categoryId];
             localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
             renderList();
         }
 
         function toggleSubcategory(subcatKey) {
-            categoryStates[subcatKey] = !categoryStates[subcatKey];
+            const isExpanding = !categoryStates[subcatKey];
+            // Accordion: collapse other subcategories when expanding one
+            if (isExpanding) {
+                categories.forEach(cat => {
+                    if (cat.subcategories) {
+                        cat.subcategories.forEach(subcat => {
+                            const key = `${cat.id}:${subcat.id}`;
+                            if (key !== subcatKey) {
+                                categoryStates[key] = false;
+                            }
+                        });
+                    }
+                });
+            }
+            categoryStates[subcatKey] = isExpanding;
             localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
             renderList();
         }
