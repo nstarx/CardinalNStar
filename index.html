@@ -1611,7 +1611,16 @@
         }
 
         function toggleCategory(categoryId) {
-            categoryStates[categoryId] = !categoryStates[categoryId];
+            const isExpanding = !categoryStates[categoryId];
+            // Accordion: collapse other categories when expanding one
+            if (isExpanding) {
+                categories.forEach(cat => {
+                    if (cat.id !== categoryId) {
+                        categoryStates[cat.id] = false;
+                    }
+                });
+            }
+            categoryStates[categoryId] = isExpanding;
             localStorage.setItem(CATEGORY_STATES_KEY, JSON.stringify(categoryStates));
             renderList();
         }
