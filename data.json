@@ -95,6 +95,28 @@
         { "id": "leadership", "name": "Leadership", "icon": "leaderboard" },
         { "id": "professional-dev", "name": "Professional Development", "icon": "school" }
       ]
+    },
+    {
+      "id": "2026-moat",
+      "name": "2026 Moat",
+      "icon": "shield",
+      "description": "Strategic moat and competitive advantage initiatives for 2026",
+      "colorClass": "moat",
+      "expanded": true,
+      "subcategories": [
+        { "id": "moat-strategies", "name": "Moat Strategies", "icon": "security" }
+      ]
+    },
+    {
+      "id": "2026-proposals",
+      "name": "2026 Proposals",
+      "icon": "assignment",
+      "description": "Proposals and initiatives for 2026",
+      "colorClass": "proposals",
+      "expanded": true,
+      "subcategories": [
+        { "id": "proposals", "name": "Proposals", "icon": "description" }
+      ]
     }
   ],
   "links": [
@@ -453,6 +475,40 @@
       "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
       "colorClass": "cyan-168",
       "terminalLegend": "[ DOCUMENTATION ]",
+      "enabled": true
+    },
+    {
+      "id": "coordination-tax",
+      "title": "Coordination Tax",
+      "shortTitle": "Coordination Tax",
+      "description": "Coordination Tax - Strategic moat analysis",
+      "url": "https://nstarx.github.io/coordination_tax/",
+      "displayUrl": "nstarx.github.io/coordination_tax",
+      "badge": "2026 Moat",
+      "category": "2026-moat",
+      "subcategory": "moat-strategies",
+      "terminalBadge": ["READY"],
+      "icon": "shield",
+      "svgPath": "M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z",
+      "colorClass": "cyan-168",
+      "terminalLegend": "[ 2026 MOAT ]",
+      "enabled": true
+    },
+    {
+      "id": "nstarx-testing-proposal",
+      "title": "NStarX Testing Proposal",
+      "shortTitle": "Testing Proposal",
+      "description": "NStarX Testing Proposal for 2026",
+      "url": "https://nstarx.github.io/nstarx-testing-proposal/",
+      "displayUrl": "nstarx.github.io/nstarx-testing-proposal",
+      "badge": "2026 Proposals",
+      "category": "2026-proposals",
+      "subcategory": "proposals",
+      "terminalBadge": ["READY"],
+      "icon": "assignment",
+      "svgPath": "M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3Z",
+      "colorClass": "cyan-168",
+      "terminalLegend": "[ 2026 PROPOSALS ]",
       "enabled": true
     }
   ],
