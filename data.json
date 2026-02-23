@@ -257,6 +257,23 @@
       "enabled": true
     },
     {
+      "id": "product-ai",
+      "title": "ProductAI",
+      "shortTitle": "ProductAI",
+      "description": "ProductAI Application",
+      "url": "https://nstarx.myddns.me/productai/",
+      "displayUrl": "nstarx.myddns.me/productai",
+      "badge": "App",
+      "category": "applications",
+      "subcategory": "core-apps",
+      "terminalBadge": ["READY"],
+      "icon": "smart_toy",
+      "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
+      "colorClass": "cyan-168",
+      "terminalLegend": "[ APP ]",
+      "enabled": true
+    },
+    {
       "id": "remote_button",
       "title": "Remote Button",
       "shortTitle": "Remote Button",
