@@ -11,6 +11,22 @@
             --cardinal: #C41E3A;
             --cardinal-dark: #9A1829;
             --cardinal-light: #E8364F;
+            --bg-primary: #F5F5F7;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #E8E8ED;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #F0F0F5;
+            --text-primary: #1A1A2E;
+            --text-secondary: #5A5A6E;
+            --text-muted: #8A8A9A;
+            --border-color: #D8D8E0;
+            --border-hover: #C0C0CC;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+        }
+
+        [data-theme="dark"] {
             --bg-primary: #0D0D0F;
             --bg-secondary: #16161A;
             --bg-tertiary: #1E1E24;
@@ -21,9 +37,6 @@
             --text-muted: #6B6B75;
             --border-color: #2A2A32;
             --border-hover: #3A3A44;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --info: #3B82F6;
         }
 
         * {
@@ -47,7 +60,7 @@
             left: 0;
             right: 0;
             height: 64px;
-            background: rgba(13, 13, 15, 0.85);
+            background: color-mix(in srgb, var(--bg-primary) 85%, transparent);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -379,7 +392,7 @@
             display: flex;
             gap: 16px;
             padding: 12px 20px;
-            background: rgba(22, 22, 26, 0.95);
+            background: color-mix(in srgb, var(--bg-secondary) 95%, transparent);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -407,7 +420,7 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(4px);
             display: none;
             align-items: center;
@@ -1007,6 +1020,52 @@
             color: var(--text-muted);
             font-family: 'SF Mono', 'Monaco', monospace;
         }
+
+        /* Theme Toggle */
+        .theme-toggle-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .theme-toggle-btn .material-symbols-outlined {
+            font-size: 20px;
+        }
+
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Light theme shadow for cards */
+        :root .resource-card {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .resource-card {
+            box-shadow: none;
+        }
+
+        :root .stats-bar {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .stats-bar {
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -1043,6 +1102,9 @@
             <button class="nav-btn" onclick="clearLocalData()">
                 <span class="material-symbols-outlined">delete</span>
                 Clear
+            </button>
+            <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark theme">
+                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
             </button>
             <button class="nav-btn primary" onclick="showHelp()">
                 <span class="material-symbols-outlined">help</span>
@@ -2023,6 +2085,34 @@
             });
         });
 
+        // Theme toggle
+        const THEME_KEY = 'nstarx_theme';
+
+        function initTheme() {
+            const saved = localStorage.getItem(THEME_KEY) || 'light';
+            applyThemeMode(saved);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            applyThemeMode(next);
+            localStorage.setItem(THEME_KEY, next);
+        }
+
+        function applyThemeMode(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+            }
+        }
+
+        initTheme();
         loadPortal();
     </script>
 </body>
