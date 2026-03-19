@@ -240,6 +240,23 @@
       "enabled": true
     },
     {
+      "id": "nstarx_dev_agents_platform",
+      "title": "Agentic AI Platform",
+      "shortTitle": "Agentic AI",
+      "description": "NStarX Dev Agents Platform - Agentic AI Overview",
+      "url": "https://nstarx.github.io/nstarx-dev-agents-platform/",
+      "displayUrl": "nstarx.github.io/nstarx-dev-agents-platform/",
+      "badge": "Documentation",
+      "category": "documentation",
+      "subcategory": "platform-docs",
+      "terminalBadge": ["READY"],
+      "icon": "smart_toy",
+      "svgPath": "M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M13,17V18H7V17H13M17,14V15H7V14H17Z",
+      "colorClass": "cyan-168",
+      "terminalLegend": "[ DOCUMENTATION ]",
+      "enabled": true
+    },
+    {
       "id": "pulse_prana",
       "title": "Pulse",
       "shortTitle": "Pulse",
